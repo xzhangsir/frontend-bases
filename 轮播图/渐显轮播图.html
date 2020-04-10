@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>渐显轮播图</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      list-style: none
+    }
+
+    a {
+      text-decoration: none
+    }
+
+    .wrap {
+      width: 1226px;
+      height: 460px;
+      margin: 50px auto;
+      position: relative;
+    }
+
+    .imgList li {
+      display: none;
+    }
+
+    .next,
+    .prev {
+      position: absolute;
+      top: 50%;
+      margin-top: -22px;
+      opacity: .7;
+      cursor: pointer;
+      transition: all .7;
+    }
+
+    .next:hover,
+    .prev:hover {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    .next {
+      left: 20px;
+    }
+
+    .prev {
+      right: 20px;
+    }
+
+    .radioList {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+
+    .radio {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #f99;
+      margin-right: 20px;
+      cursor: pointer;
+      transition: all .5s;
+    }
+
+    .radio:hover {
+      background: red;
+    }
+
+    .focus {
+      background: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <ul class='imgList'>
+      <li style='display: block'><a href="#"><img src="1.jpg" alt=""></a></li>
+      <li><a href="#"><img src="2.jpg" alt=""></a></li>
+      <li><a href="#"><img src="3.jpg" alt=""></a></li>
+      <li><a href="#"><img src="4.jpg" alt=""></a></li>
+      <li><a href="#"><img src="5.jpg" alt=""></a></li>
+      <li><a href="#"><img src="6.jpg" alt=""></a></li>
+    </ul>
+    <img src="l.png" alt="" class="next">
+    <img src="r.png" alt="" class="prev">
+    <div class="radioList"></div>
+  </div>
+  <script>
+    function $(result) {
+      var result = document.querySelectorAll(result);
+      if (result.length && result.length !== 1) {
+        return result;
+      } else {
+        return result[0];
+      }
+    }
+    var next = $('.next');
+    var prev = $('.prev');
+    var imgList = $('.imgList');
+    var liList = $('.imgList li');
+    var radioList = $('.radioList');
+    var wrap = $('.wrap');
+    var len = liList.length;
+    var count = 0;//记录当前是第几张
+    function main() {
+      for (var i = 0; i < len; i++) {
+        liList[i].style.display = 'none';
+        liList[i].style.opacity = 0;
+        $('.radio')[i].classList.remove('focus');
+      }
+      liList[count].style.display = 'block';
+      var timer = setInterval(function () {
+        var op = Number(liList[count].style.opacity);
+        if (op == 1) {
+          clearInterval(timer);
+          return;
+        }
+        liList[count].style.opacity = op + 0.02;
+      }, 16)
+      radioEl[count].classList.add('focus');
+    }
+    next.onclick = function () {
+      count++;
+      if (count == len) {
+        count = 0;
+      }
+      main();
+    }
+    prev.onclick = function () {
+      count--;
+      if (count == -1) {
+        count = len - 1;
+      }
+      main();
+    }
+    var time = setInterval(function () {
+      next.click();
+    }, 1500);
+    wrap.onmouseover = function () {
+      clearInterval(time);
+    }
+    wrap.onmouseout = function () {
+      time = setInterval(function () {
+        next.click();
+      }, 1500);
+    }
+    //小圆点	
+    for (var j = 0; j < len; j++) {
+      var radio = document.createElement('span');
+      radioList.appendChild(radio);
+      radio.className = 'radio';
+      if (!j) radio.classList.add('focus');
+    }
+    var radioEl = $('.radio');
+    for (let j = 0; j < len; j++) {
+      radioEl[j].onclick = function () {
+        count = j;
+        main();
+      }
+    }
+  </script>
+</body>
+
+</html>

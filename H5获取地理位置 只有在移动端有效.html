@@ -1,0 +1,21 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>获取经纬度</title>
+</head>
+<body>
+</body>
+</html>
+<script type="text/javascript">
+
+    window.navigator.geolocation.getCurrentPosition(function(pos){
+    	var lon = pos.coords.longitude;//经度
+    	var lat = pos.coords.latitude;//纬度
+    	alert(lon);
+    	alert(lat);
+    },function(error){
+    	console.log(error);
+    });
+  
+</script>
+

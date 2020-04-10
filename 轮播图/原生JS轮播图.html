@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播图</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		.main{
+			width:1000px;
+			height:409px;
+			margin:50px auto;
+			position: relative;
+		}
+		li{
+			list-style: none;
+			display: none;
+		}
+		ul .show{
+			display: block;
+		}
+		a{
+			text-decoration: none;
+		}
+		.left,.right{
+			width: 45px;
+			height:45px;
+			position: absolute;
+			opacity: 0.5;
+			transition: all .5s;
+			top:50%;
+			margin-top:-22.5px;
+			cursor: pointer;
+		}
+		.left:hover,.right:hover{
+			opacity: 1;
+			transform: scale(1.15);
+		}
+		.left{
+			left:20px;
+		}
+		.right{
+			right:20px;
+		}
+		.radioList{
+			position: absolute;
+			bottom:15px;
+			left:50%;
+			transform: translate(-50%,0);
+		}
+		.radio{
+			width:15px;	
+			height: 15px;
+			background: red;
+			border-radius: 50%;
+			float: left;
+			margin:0px 20px;
+			opacity: 0.3;
+			transition: all .5s;
+			cursor: pointer;
+		}
+		.focus{
+			opacity: 1;
+		}
+		.radio:hover{
+			opacity: 1;
+		}
+	</style>
+</head>
+<body>
+	<div class="main">
+		<ul>
+			<li class="show"><a href="#"><img src="1.jpg" alt=""></a></li>
+			<li><a href="#"><img src="2.jpg" alt=""></a></li>
+			<li><a href="#"><img src="3.jpg" alt=""></a></li>
+		</ul>
+		<img src="l.png" alt="" class="left">
+		<img src="r.png" alt="" class="right">
+		<div class="radioList"></div>
+	</div>	
+	<script>
+		function $(result){
+			var result = document.querySelectorAll(result);
+			if(result.length && result.length !== 1){
+				return result;
+			}else{
+				return result[0];
+			}
+		}
+		var count = 0;
+		var liList = $('ul>li')
+		//自动播放
+		timer = setInterval(function(){
+			$('.left').click();
+		},1000)
+		// // 鼠标移上不动
+		$('.main').onmouseover = function(){
+			clearInterval(timer);
+		}
+		// 鼠标移除继续动
+		$('.main').onmouseout = function(){
+			timer = setInterval(function(){
+				$('.left').click();
+			},1000)
+		}
+		// 点击左边按钮
+		$('.left').onclick = function(){
+			hide();
+			if(count == liList.length - 1){
+				count = 0;
+				liList[count].className = "show";
+				$('.radio')[count].classList.add('focus');
+				return;
+			}
+			count++;
+			liList[count].className = "show";
+			$('.radio')[count].classList.add('focus');
+		}
+		// 点击右边的按钮
+		$('.right').onclick = function(){
+			hide();
+			if(count == 0){
+				count = liList.length -1;
+				liList[count].className = 'show';
+				$('.radio')[count].classList.add('focus');
+				return;
+			}
+			count--;
+			liList[count].className = 'show';
+			$('.radio')[count].classList.add('focus');
+		}
+		// 键盘事件
+		document.onkeydown = function(e){
+			if(e.keyCode == 39){
+				$('.right').click();
+			}
+			if(e.keyCode == 37){
+				$('.left').click();
+			}
+		}
+		// 所有的li消失
+		function hide(){
+			for(var i = 0 ; i < liList.length; i++){
+				liList[i].className = '';
+				$('.radio')[i].classList.remove('focus');
+			}
+		}
+		// 小圆点
+		function createRadio(){
+			var div = document.createElement('div');
+			div.className = 'radio';
+			$('.radioList').appendChild(div);
+		}
+		for(var i = 0; i < liList.length; i++){
+			createRadio();
+		}
+		$('.radio')[0].classList.add('focus');
+		for(let j =0; j < liList.length;j++){
+			$('.radio')[j].onclick = function(){
+				hide();
+				liList[j].className = 'show';
+				$('.radio')[j].classList.add('focus');
+			}
+		}
+	</script>
+</body>
+</html>

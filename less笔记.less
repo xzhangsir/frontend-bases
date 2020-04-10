@@ -1,0 +1,106 @@
+// 在浏览器端使用 需要引入 less.min.js 文件 修改style的type='text/less'
+// 也可以下载插件 Easy LESS
+
+@color:#fff;
+@border:1px solid ;
+@b:border;
+@m:margin;
+ul{
+    width:100px;
+    color:@color;
+    @{b}:@border @color;
+    li{
+        width:20px;
+        @{m}:20px;
+    }
+}
+// 变量的延时加载
+@num : 1;
+.class{
+@num : 2;
+    .brass{
+        @num : 3;
+        width : @num;//less中的变量会全部加载完毕后才使用
+        @num : 4;
+    }
+height:@num;
+}
+// 混合 和Sass中稍微有点区别
+// 什么是混合？ 将一系列规则集，引入到另一系列规则集中。
+// 如过定义的混合不加 括号 就会输出到css文件中
+// 加上空的括号 就不会输出到 CSS文件中
+// 也可以传参数
+.alert(@h:50px,@c:#f40){
+    text-align: center;
+    line-height: @h;
+    color:@c;
+}
+button{
+    .alert(40px);
+}
+// 命名参数的混合
+i{
+    .alert(@c:red)
+}
+// 接受默认参数的 混合
+div{
+    .alert;
+}
+// 匹配混合
+
+.sanjiao(@_,@c,@w){
+    width:0px;
+    height:0px;
+    overflow: hidden;
+}
+.sanjiao(B,@c,@w){
+    border-width: @w;
+    border-style:solid dashed dashed dashed;
+    border-color:@c transparent transparent transparent;
+}
+.sanjiao(T,@c,@w){
+    border-width: @w;
+    border-style: dashed dashed  solid dashed;
+    border-color: transparent transparent  @c transparent;
+}
+.sanjiao(R,@c,@w){
+    border-width: @w;
+    border-style: dashed solid  dashed dashed;
+    border-color: transparent @c transparent transparent;
+}
+.sanjiao(L,@c,@w){
+    border-width: @w;
+    border-style: dashed dashed dashed solid;
+    border-color: transparent transparent transparent @c;
+}
+// 使用 混合匹配
+.div{
+    .sanjiao(R,red,10px);
+}
+
+// 继承 all表示吧 还有.ex的所有样式全部继承
+.ex{
+    width:100px;
+    height: 20px;
+    
+}
+del{
+    &:extend(.ex all);
+}
+// 避免编译 ~""
+em{
+    color:~"cacl(100px + 100)"
+}
+
+// 大屏   用法  .px2vw(margin-left, 35);
+
+@wWidth: 4800;
+@wHeight: 1620;
+
+.px2vw(@name, @px) {
+  @{name}: (@px / @wWidth) * 100vw;
+}
+.px2vh(@name, @px) {
+  @{name}: @px / @wHeight * 100vh;
+}
+

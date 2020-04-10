@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin:0;
+			padding:0; 
+		}
+		.main{
+			width:1226px;
+			height:460px;
+			margin: 50px auto;
+			position: relative;
+		}
+		a{
+			text-decoration: none;
+		}
+		ul>li{
+			width:100%;
+			height:100%;
+			list-style:none;
+			display: none;
+		}
+		ul>.focus{
+			display: block;
+		}
+		.left,.right{
+			width:50px;
+			height:50px;
+			position: absolute;
+			top:50%;
+			margin-top:-25px;
+			opacity: 0.7;
+			transition:  all .5s;
+		}
+		.left:hover,.right:hover{
+			opacity: 1;
+			transform: scale(1.15);
+		}
+		.left{
+			left:20px;
+		}
+		.right{
+			right:20px;
+		}
+		.radioList{
+			position: absolute;
+			bottom:20px;
+			left:50%;
+			transform:translate(-50%,0);
+		}
+		.radioList span{
+			display: inline-block;
+			width:15px;
+			height:15px;
+			border-radius: 50%;
+			background: #f99;
+			transition:all .5s;
+			cursor: pointer;
+			margin:0 10px;
+		}
+		.radioList .focus,.radioList span:hover{
+			background: red;
+		}
+	</style>
+</head>
+<body>
+	<div class = "main">
+		<ul>
+			<li class = 'focus'><a href="#"><img src="1.jpg" alt=""></a></li>
+			<li><a href="#"><img src="2.jpg" alt=""></a></li>
+			<li><a href="#"><img src="3.jpg" alt=""></a></li>
+			<li><a href="#"><img src="4.jpg" alt=""></a></li>
+			<li><a href="#"><img src="5.jpg" alt=""></a></li>
+			<li><a href="#"><img src="6.jpg" alt=""></a></li>
+		</ul>
+		<img src="l.png" alt="" class="left">
+		<img src="r.png" alt="" class="right">
+		<div class = 'radioList'></div>
+	</div>
+	<script>
+		function $(result){
+			var result = document.querySelectorAll(result);
+			if(result.length && result.length !== 1){
+				return result;
+			}else{
+				return result[0];
+			}
+		}
+		var li = $('li');
+		var count = 0;
+		// 左边点击
+		$('.left').onclick = function(){
+			hidd();
+			if(count == li.length - 1){
+				count = 0;
+				li[count].className = 'focus';
+				radio[count].classList.add('focus');
+				return;
+			}
+			li[++count].className = 'focus';
+			radio[count].classList.add('focus');
+		}
+		// 点击右边
+		$('.right').onclick = function(){
+			hidd();
+			if(count == 0){
+				count = li.length - 1;
+				li[count].className = 'focus';
+				radio[count].classList.add('focus');
+				return;
+			}
+			li[--count].className = 'focus';
+			radio[count].classList.add('focus');
+		}
+		// 自动播放
+		var timer = setInterval(function(){
+			$('.left').click();
+		},1000)
+		// 鼠标移上暂定播放
+		$('.main').onmouseover = function(){
+			clearInterval(timer);
+		}
+		// 鼠标移除继续播放
+		$('.main').onmouseout = function(){
+			timer = setInterval(function(){
+				$('.left').click();
+			},1000)
+		}
+		// 创建一个小圆点
+		function createRadio(){
+			var span = document.createElement('span');
+			var radioList = document.getElementsByClassName('radioList')[0];
+			radioList.appendChild(span);
+			span.className = 'radio';
+		}
+		//按照图片的个数创建许多圆点
+		for(var i = 0 ; i < li.length; i++){
+			createRadio();
+		} 
+		// 点击小圆点事件
+		var radio = document.getElementsByClassName('radio');
+		radio[0].classList.add('focus');
+		for(let i = 0 ; i < radio.length ; i++){
+			radio[i].onclick = function(){
+				count = i;
+				hidd();
+				li[count].className = 'focus';
+				this.classList.add('focus');
+			}
+		}
+		// 影藏
+		function hidd(){
+			for(var i = 0 ; i < li.length; i++){
+				li[i].className = '';
+				radio[i].classList.remove('focus');
+			}
+		}
+	</script>	
+</body>
+</html>

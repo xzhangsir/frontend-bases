@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+       *{
+            margin:0;
+            padding:0;
+        }
+        html, body{
+            width: 100%;
+            height:100%;
+            background:-webkit-radial-gradient(center center,600px 600px,rgba(244,23,234,0.2),rgba(0,0,0,0));
+            background-color:#000;
+            overflow: hidden; 
+        }
+        .wrapper{
+            perspective:800px;
+        }
+        .box{ 
+            width:120px;
+            height:180px;
+            margin:200px auto;
+            position: relative;
+            transform-style:preserve-3d;
+            transform: rotateX(-10deg) rotateY(0deg);
+        }
+        .box img{
+            width:100%;
+            height: 100%;
+            position: absolute;
+            transform:rotateY(0deg) translateZ(0px);
+            -webkit-box-reflect:below 5px -webkit-linear-gradient(top,rgba(0,0,0,0) 40%,rgba(0,0,0,0.5) 100%);
+
+        } 
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="box">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+            <img src="https://www.baidu.com/img/bd_logo1.png?qua=high" alt="">
+        </div>
+    </div>
+    <script>
+        $(function(){
+
+            init();
+            function init() {
+                var oImg = $('img');
+                var len = oImg.length;
+                var deg = 360 / len;
+                for (var i = 0; i < len; i++) {
+                    $(oImg[i]).css({
+                        transform: 'rotateY(' + i * deg + 'deg) translateZ(350px)',
+                        transition: 'transform 1s ' + (len - 1 - i) * 0.1 + 's'
+                    })
+                }
+                bindEvent();
+            }
+            function bindEvent() {
+                var oWrap = $('.box');
+                var body = $('body');
+                var lastX, lastY, nowX, nowY, disx = 0, disy = 0;
+                var roY = 0, roX = -10;
+                var timer;
+                body.on('mousedown', function (e) {
+                    var event = e || window.event;
+                    clearInterval(timer);
+                    lastX = event.clientX;
+                    lastY = event.clientY;
+                    body.on('mousemove', function (e) {
+                        var event = e || window.event;
+                        nowX = event.clientX;
+                        nowY = event.clientY;
+                        disx = nowX - lastX;
+                        disy = nowY - lastY;
+                        roY += disx * 0.2;
+                        roX -= disy * 0.2;
+                        oWrap.css({
+                            'transform': 'rotateX(' + roX + 'deg) rotateY(' + roY + 'deg)',
+                            'cursor': 'move'
+                        });
+                        lastX = nowX;
+                        lastY = nowY;//每次将当前触发对象的点为变化的初始点，
+                    });
+                    body.on('mouseup', function () {
+                        body.off('mousemove')
+                        clearInterval(timer);
+                        timer = setInterval(function () {
+                            disx *= 0.98;
+                            disy *= 0.98;
+                            roY += disx * 0.2;
+                            roX -= disy * 0.2;
+                            oWrap.css({
+                                'transform': 'rotateX(' + roX + 'deg) rotateY(' + roY + 'deg)',
+                                'cursor': 'pointer'
+                            })
+                            if (Math.abs(disx) < 0.1 && Math.abs(disy) < 0.1) {
+                                clearInterval(timer);
+                            }
+                        }, 20);
+                    });
+                    return false;//取消鼠标默认事件
+                });
+            }
+
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ECMAscript</title>
+	<link rel="SHORTCUT ICON" href="image/心.ico"><!-- 标题栏的图标 -->
+	<!-- <script type="text/javascript" src=""></script> -->
+</head>
+<body>
+	<script type="text/javascript">
+
+	// alert('我是第一种类型的弹出框');
+	// if(confirm('你喜欢鲜花吗？')){
+	// 	alert('喜欢');
+	// }else{
+	// 	alert('不喜欢');
+	// }
+	// var num = prompt('请输入数字：');
+	// alert(num);
+
+		// IE 		内核 trident  		插人特
+		// 谷歌		内核 webkit/blink  	不灵可
+		// 火狐         gecko			盖口
+		// 欧朋         presto         铺锐思头
+		// 色佛瑞        webkit         
+		//call 和 apply都可以改变this的指向 但是传参列表不同
+		// function Studnet(name,age,sex){
+		// 	this.name = name ;
+		// 	this.age = age;
+		// 	this.sex = sex;
+		// }
+		// function Teacher(name ,age ,sex,sal){
+		// 	// Studnet.call(this,name ,age ,sex);
+		// 	// Studnet.apply(this,[name ,age,sex]);
+		// 	this.sal = sal;
+		// }
+
+		// var tea = new Teacher('zhangsan',23,'man',12233);
+		//bind() 方法和前两者不同在于： bind() 方法会返回执行上下文被改变的函数而不会立即执行而是返回一个函数，而前两者是直接执行该函数。他的参数和call()相同。
+
+
+		//继承 （共享原型）
+		// Father.prototype.name = "zhangsan";
+		// function Father(){
+		// }
+		// function Son(){
+		// }
+		// Son.prototype = Father.prototype;
+		// var son = new Son();
+		// var father = new Father();
+
+		//用封装方法的形式实现继承（共享原型）
+		// Father.prototype.name = "zhangsan";
+		// function Father(){
+		// }
+		// function Son(){
+		// }
+		// function inherit(Target,Origin){
+		// 	Target.prototype = Origin.prototype;
+		// }
+		// inherit(Son,Father);
+		// var son = new Son();
+		// var father = new Father();
+
+		//圣杯模式的继承
+		// Father.prototype.name = "zhangsan";
+		// function Father(){
+		// }
+		// function Son(){
+		// }
+		// 
+		// function inherit(Target,Origin){
+		// 	function F(){};
+		// 	F.prototype = Origin.prototype;
+		// 	Target.prototype = new F();
+		// 	Target.prototype.constructor = Target;
+		// 	//原型上默认有constructor  它指向构造函数
+		// 	Target.prototype.uber = Origin.prototype;
+		// 	//方便找出超类
+		// }
+		// inherit(Son,Father);
+		// var son = new Son();
+		// var father = new Father();
+		 
+
+
+		//雅虎时代的继承 
+		// var inherit = (function(){
+		// 	var F = function(){};
+		// 	return function(Target,Origin){
+		// 		F.prototype = Origin.prototype;
+		// 		Target.prototype = new f();
+		// 		Target.prototype.constructor = Target;
+		// 		Target.prototype.uber = Origin.prototype;
+		// 	}
+		// }());
+		
+
+        //防止污染全局变量 用闭包来解决
+		// var init = (function(){
+		// 	var name = "zhangsan";
+		// 	function getname(){
+		// 		console.log(name);
+		// 	}
+		// 	return function(){
+		// 		getname();
+		// 	}
+ 	// 	}());
+ 	// 	init(); 
+ 		
+
+ 		//this.wife 可以写成 this['wife']里面必须是字符串
+ 		// var Deng = {
+ 		// 	wife1 :{name :'xiaoliu'},
+ 		// 	wife2 :{name :'xiaozhang'},
+ 		// 	wife3 :{name :'xiaozhao'},
+ 		// 	saywife:function(num){
+ 		// 		return this['wife' + num].name;
+ 		// 	}
+ 		// }
+ 		// console.log(Deng.saywife(1));
+
+ 		//对象的遍历 枚举  prop in  判断是不是原型链上的属性hasOwnProperty
+ 		// var student = {
+ 		// 	name : "zhangsan",
+ 		// 	age : 23,
+ 		// 	height : 170,
+ 		// 	width : 65,
+ 		// 	__proto__:{
+ 		// 		lastName : 'laozhang'
+ 		// 	}
+ 		// }
+
+ 		// for(var prop in student){
+ 		// 	// console.log(prop + ' ' +typeof(prop));
+ 		// 	//prop是字符串形式的
+ 		// 	console.log(student[prop]);
+ 		// 	//这样也会把原型链上的属性打印出来
+ 		// 	//如果不需要原型链上的属性 可以判断一下
+ 		// 	if(student.hasOwnProperty(prop)){
+ 		// 		//如果是原型链上的属性不执行下面的语句
+ 		// 		console.log(student[prop]);
+ 		// 	}
+ 		// }
+
+ 		//in操作符 这个对象能不能访问到这个属性
+ 		// var student = {
+ 		// 	name : "zhangsan",
+ 		// 	age : 23,
+ 		// 	height : 170,
+ 		// 	width : 65,
+ 		// 	__proto__:{
+ 		// 		lastName : 'laozhang'
+ 		// 	}
+ 		// }
+ 		// //判断student 能不能访问到lastname这个属性
+ 		// console.log("lastName" in student);
+
+
+ 		//A instanceof B 意思是 A是不是B构造出来的（a 的原型链上有没有b的原型）
+ 		// function Student(){
+ 		// }
+ 		// var stu = new Student();
+ 		// console.log(stu instanceof Student);
+
+
+ 		// //arguments.callee 指向函数的引用
+ 		// function test(){
+ 		// 	console.log(arguments.callee);
+ 		// }
+ 		// test();
+ 		
+ 		// //递归阶乘
+ 		// function demo(num){
+ 		// 	if(num == 1){
+ 		// 		return 1;
+ 		// 	}
+ 		// 	return num * demo(num - 1);
+ 		// } 
+ 		// console.log(demo(5));
+ 		
+
+ 		// //arguments.callee 的应用
+ 		// var num = (function(n){
+
+ 		// 	if(n == 1){
+ 		// 		return 1;
+ 		// 	}
+ 		// 	return n * arguments.callee(n-1);
+ 		// }(5));
+ 		
+
+
+ 		// //function.caller 指这个函数在哪个环境中被调用的
+ 		// function test(){
+ 		// 	Demo();
+ 		// }
+ 		// function Demo(){
+ 		// 	console.log(Demo.caller);
+ 		// 	//Demo这个函数在test这个环境中别调用的 所以 输出test这个函数
+ 		// }
+ 		// test();
+
+
+ 		//浅层克隆 只能克隆原始值 引用值不行
+ 		// var obj ={
+ 		// 	name:'zhangsan',
+ 		// 	age:23,
+ 		// 	sex:'man'
+ 		// };
+ 		// var obj1 ={};
+
+ 		// function close(Origin,Target){
+ 		// 	var target = Target || {};
+ 		// 	//防止用户不传 Target 
+ 		// 	for(var prop in Origin){
+ 		// 		Target[prop] = Origin[prop];
+ 		// 	}
+ 		// 	return target;
+ 		// }
+ 		// close(obj,obj1);
+ 		
+
+ 		//判断是数组还是对象的三种方法
+ 		// var arr = [1,2,3];
+ 		// var obj = {
+ 		// 	name: 'zhangdan',
+ 		// 	age:23
+ 		// }
+ 		// if(arr.constructor == Array){
+ 		// 	console.log(1);
+ 		// }
+ 		// if(obj.constructor == Object){
+ 		// 	console.log(2);
+ 		// }
+ 		// console.log(arr instanceof Object);
+ 		// console.log(obj instanceof Object);
+
+ 		// console.log(Object.prototype.toString.call(arr));
+ 		// console.log(Object.prototype.toString.call(obj));
+
+
+ 		//深度克隆
+ 		// var obj = {
+ 		// 	name : 'zhangsan',
+ 		// 	age :23,
+ 		// 	arr:['liu',23,'zhang'],
+ 		// 	wife:{
+ 		// 		sex:'man',
+ 		// 		son:{
+ 		// 			name:'zhao',
+ 		// 		}
+ 		// 	}
+ 		// }
+ 		// var obj1 = {};
+ 		// //判断是不是原始值 判断是数组还是对象 创建新的数组或者对象
+ 		// function cody (Origin,Target){
+ 		// 	var target = Target||{};
+ 		// 		toStr = Object.prototype.toString;
+ 		// 		arrStr = '[Object Array]';
+ 		// 	for(var prop in Origin){
+ 		// 		//先判断是不是原型上的属性 如果不是在克隆
+ 		// 		if(Origin.hasOwnProperty(prop)){
+ 		// 			//判断是原始值还是引用值
+ 		// 			if(typeof(prop) !== 'null'&&typeof(Origin[prop]) == 'Object'){
+ 		// 				//判断是数组还是对象
+ 		// 				if(toStr.call(Origin[prop]) == arrStr){
+ 		// 					//如果是数组创建新的数组
+ 		// 					target[prop] = [];
+ 		// 				}else{
+ 		// 					//是对象创建新的对象
+ 		// 					target[prop] = {};
+ 		// 				}
+ 		// 				//可以使用三目运算符进行简化
+ 		// 				// target[prop] = (toStr.call(Origin[prop]) == arrStr) ? [] : {};
+ 		// 			cody(Origin[prop],Target[prop]);
+ 		// 			}else{
+ 		// 				//原始值直接克隆
+ 		// 				target[prop] = Origin[prop];
+ 		// 			}
+ 		// 		}
+ 		// 	}
+ 		// 	return target;
+ 		// }
+ 		// cody(obj,obj1);
+
+ 		//创建数组的两种方法
+ 		// var arr = [1,2,3];
+ 		// var arr1 = new Array(10,12);
+ 		//var arr1 = new Array(10);//创建一个长度为10的空数组
+ 		
+ 		
+ 		
+ 		
+ 		//数组中的方法
+ 		//	改变原数组的
+ 		//push()  向数组的最后一位插入数据  返回值为数组的长度
+ 		//pop()  删除数组的最后一位 返回值为删除的数据
+ 		//unshift()  向数组的第一位添加数据 返回值为数组的长度
+ 		//shift() 删除数组的第一位  返回值为删除的数据
+ 		//splice() 从数组的第几位开始删除几位 返回值为删除的数据 第三参数为在切开处添加新的数据
+ 		//
+ 		//	不改变原数组的
+ 		//  slice()  从数组的第几位 剪贴到第几位 不包含后面的 返回值为剪贴出来的数据
+ 		//  
+ 		//数组中的一些方法push方法
+ 		// var arr = [10,12];
+ 		// arr.push(1,2,1);//push 在原数组的末尾添加数据 返回的是数组的长度
+ 		
+ 		 
+ 		// //push 方法的内部实现
+ 		// Array.prototype.mypush = function(){
+ 		// 	for(var i = 0 ; i < arguments.length ; i++){
+ 		// 		var len = this.length;
+ 		// 		this[len] = arguments[i];
+ 		// 	}
+ 		// 	return this.length;
+ 		// }
+ 		// var arr = [21,2];
+ 		// arr.mypush(1,2,3);
+
+
+ 		//pop（） 会将数组的最后一位剪贴出去
+ 		// var arr = [10,22,35,44,59];
+ 		// arr.pop();//原数组变为[10,22,35,44]返回值为59
+ 		//console.log(arr.pop());
+ 		
+ 		//unshift()在原数组的第一位添加数字
+ 		// var arr = [10,22,35,44,59];
+ 		// arr.unshift(100);//返回值是数组的长度
+ 		// arr.shift();//从数组的前面剪贴数据 返回值是剪贴数据
+ 		
+ 		
+ 		//reverse() 反转原数组
+ 		// var arr = [10,22,35,44,59];
+ 		// arr.reverse();
+ 		
+
+ 		//arr.splice(从第几位开始，剪得长度，在贴口出添加的新数据);
+ 		//第三个参数不需要刻意不写
+ 		//如果第一位传否数 那么就是倒序查
+ 		//第一位+= 第一位？ 0 ：this.length;
+ 		//var arr = [10,22,35,44,59];	
+ 		//arr.splice(1,2);//从第一位开始剪2个长度将剪得值返回
+ 		//arr.splice(1,2,10,11,5);//返回的是剪贴出来的数据
+
+
+ 		//sort();将数组按照升序进行排序
+ 		//var arr = [10,52,35,64,59];
+ 		//arr.sort();
+ 		//sort（）提供了接口 可以按照自己的方法排序
+ 		//看返回值 当为否数  前面的数在前
+ 		//			 正数   后面的书在前
+ 		//			 零  不动
+ 		// arr.sort(function(a,b){
+ 		// 	//return a - b;//升序
+ 		// 	return b - a; //降序
+ 		// })
+ 		//数组乱序
+ 		 // arr.sort(function(){
+ 		 // 	return Math.random()-0.5;
+ 		 // })
+
+ 		 //下面的这些数组方法都不影响原数组
+ 		//arr.concat(arr1)将arr1拼接在arr的后面 不影响原数组
+ 		// var arr = [1,2,3];
+ 		// var arr1 = [8,9,5,45];
+ 		// arr.concat(arr1);
+
+
+ 		//arr.toString() 吧数组当做字符串展现出来
+ 		// var arr = [1,2,3];
+ 		// arr.toString();
+
+ 		// var arr = [1,2,5,8,9,4,6];
+ 		// var num = arr.slice(1,3);//从第一位开始截取到第三位
+ 		// var num1 = arr.slice(2);//将第二位后面的数截取出来
+ 		// var num2 = arr.slice();//整个截取
+ 		// //将数组中的数用“-”连接起来变成字符串
+ 		// var num3 = arr.join('-');
+
+
+ 		// //下面是字符串中的一个方法split("-");将字符串按照‘-’拆分为数组
+ 		// var str = num3.split('-');
+
+
+ 		//类数组  属性为索引 有length 最好有push方法 不是数组
+ 		// var arr = {
+ 		// 	'2' : 'a',
+ 		// 	'3' : 'b',
+ 		// 	'4' : 'c',
+ 		// 	'length' : 3,
+ 		// 	'push' : Array.prototype.push,
+ 		// }
+ 		// arr.push('d');
+ 		// //一个参数的push 方法
+ 		// Array.prototype.push =function(target){
+ 		// 	this[this.length] = target;
+ 		// 	this.length++;
+ 		// } 
+
+ 		// 真伪数组的转换
+ 		// 真转伪
+ 		/*
+	 		var arr = [1,2,3];
+	 		var obj = {};
+	 		[].push.apply(obj,arr);
+	 		console.log(obj);
+ 		*/
+ 	
+ 		//伪转真
+ 		/*
+	 		var obj = {
+	 			1:"12",
+	 			2:"23",
+	 			length:2
+	 		};
+	 		var arr = [].slice.call(obj);
+		 */
+
+
+
+
+
+
+
+
+		//精确的判断 是哪个类型 优于typeof
+		// function type (target){
+		// 	var ret = typeof(target)
+		// 	var tempale = {
+		// 		'[object Array]': "array",
+		// 		'[object Object]' : 'object',
+		// 		'[object Number]' : 'number-object',
+		// 		'[object Boolean]' : 'boolean-object',	
+		// 		'[object String]' : 'string-object'
+		// 	}
+		// 	//先判断是不是null 在判断是对象还是方法 
+		// 	if(target === null){
+		// 		return null;
+		// 	}else if(ret == 'object'){
+		// 		var str = Object.prototype.toString.call(target);
+		// 			return tempale[str];
+		// 		}else{
+		// 			return ret;
+		// 		}
+		// 	}
+		
+
+		//字符串去重
+			// var str = 'ifejfisdevfiifai';
+		
+			// String.prototype.unique = function(){
+			// 	var arr = this.split('');
+			// 	var obj = {},
+			// 		str1 = ""
+			// 	for(var i = 0; i < arr.length ; i++){
+			// 		if(!obj[arr[i]]){
+			// 			obj[arr[i]] = "jj";
+			// 			str1 += arr[i];
+			// 		}
+			// 	}
+			// 	return str1;
+			// }
+
+
+
+		//数组去重
+		// var arr1 = [1,2,4,2,1,5,1,2,4,1,5];
+		// Array.prototype.unique = function(){
+		// 	var arr = [],
+		// 		temp = {},
+		// 		len = this.length;
+		// 	for(var i = 0 ; i < len ; i++ ){
+		// 		if(!temp[this[i]]){
+		// 			temp[this[i]] = 'abc';
+		// 			arr.push(this[i]);
+		// 		}
+		// 	}
+		// 	return arr;
+		// }
+		// arr1.unique();
+
+		
+
+		//ES5的严格模式  'use strict'
+		//在某一个代码块的前面添加 'use strict' 这个代码块按住ES5的严格模式执行
+		//ES5里没有的方法 with（） arguments.callee() fun.caller() 变量赋值前必须声明
+		
+		//with()方法 会改变作用域链 会将括号中的对东西 放在作用域的最顶端
+		// var obj = {
+		// 	name : 'zhang'
+		// }
+		// function test(){
+		// 	var age = 123;
+		// 	var name = 'liu';
+		// 	with(obj){
+		// 		console.log(name);
+		// 	}
+		// }
+		// test();
+
+
+		//eval() 会把字符串当做代码来运行
+		//eval('console.log(1)')
+
+		// try{
+		// 	console.log('w');
+		// 	console.log(w);
+		// 	console.log('a');
+		// }catch(e){
+		// 	console.log(e.message + " " + e.name);
+		// 	//e.message 错误信息 e.name 错误名
+		// }
+
+		//打印出数组的索引和索引的值 先传值 再传索引
+		//只能遍历数组不能遍历对象
+		// var arr = [1,12,15,85,63];
+		// arr.forEach(function(value,index){
+		// 	console.log(index,value);
+		// })
+		
+		// map()方法
+		// var arr = [1,12,15,85,63];
+		// arr.map(function(value,index,array){
+		// 	console.log(index,value,array);
+		// })
+		
+
+		// url中不能出现中文  可以这样转换
+		// console.log(encodeURIComponent("张三"));
+		 
+		
+		//字符串的方法
+		//indexOf()  查找某个字符在字符串中的下标  没有返回 -1
+		//slice()   从第几个开始  剪贴到第几位 不包含最后一个
+		//split()  按照某个字符 将字符串转为数组  会删除那个字符 
+		//substr()  从第几个开始 剪贴多长的字符
+	</script>
+
+</body>
+</html>
+
+
+

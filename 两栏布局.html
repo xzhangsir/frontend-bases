@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>两栏布局</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		/* 方案  1  */
+		/*.left{
+			position: absolute;
+			top:0;
+			left:0;
+			width:300px;
+			background: #f40;
+		}
+		.right{
+			background: #f99;
+			padding-left:300px;
+		}*/
+		/* 方案  2  */
+		/*.left{
+			float: left;
+			width: 300px;
+			background: #f40;
+		}
+		.right{
+			padding-left: 300px;
+			background: #f99;
+		}*/
+		/* 方案  3  */
+		.wrap{
+			display:table;
+			width:100%;
+		}
+		.left{
+			background-color:orange;
+			width:300px;
+			display:table-cell;
+		}
+		.right{
+			background-color:pink;
+			display:table-cell;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="left">左</div>
+		<div class="right">右</div>
+	</div>
+</body>
+</html>

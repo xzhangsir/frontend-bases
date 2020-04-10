@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS3</title>
+	<link rel="stylesheet" href="animate.min.css">
+	<!-- css运到的库 -->
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		p{
+			/*padding:100px 0 0 100px;*/
+			font-size:30px;
+			/*text-shadow: 0px 2px 0px  #f40;*/
+					/*水平阴影的位置 垂直 模糊距离 颜色*/
+
+		}
+
+	/*	background-origin 属性用来指定背景图像的位置区域。
+						padding-box： 背景图像相对于内边距框来定位。
+						border-box: 背景图像相对于边框盒来定位。
+						content-box： 背景图像相对于内容框来定位。
+
+		background-clip	 属性用来规定背景的绘制区域。
+
+						border-box： 背景被裁剪到边框盒。 
+						padding-box： 背景被裁剪到内边距框。  
+						content-box： 背景被裁剪到内容框。*/
+
+		/*选择图片作为边框的背景
+		div{
+			
+			border-image-source: url('') ;
+			切割图片
+			border-image-slice: 19px;
+			border-image-repeat: repeat;平铺 round  
+		}*/
+		.mohu{
+			width:80%;
+			height:100px;
+			margin:0 auto;
+			background-color:#f40;
+			box-shadow: 10px 10px 10px 0px #000;
+			/*水平阴影位置 垂直  模糊距离  阴影尺寸  颜色*/
+			max-width:800px;/*最大宽度*/
+			min-width:400px;/*最小宽度*/
+		}
+		.box{
+			width:100px;
+			border:1px solid #000;
+			padding: 20px;
+			/*开启怪异模式   width等于 盒子的内边距加边框和内容的总宽度*/
+			box-sizing: border-box;
+		}	
+		.coulmn{
+			width:100%;
+			border:2px solid #000;
+			column-width:300px;/*栏宽*/
+			column-count: 3;/*分成3列*/
+			column-gap: 20px;/*列间距20个像素*/
+			column-rule: 3px solid #000;/*分割线*/
+		}
+		.image{
+			width:80%;
+			height:300px;
+			border:1px solid #000;
+			background: url('./image/biaoqing.jpg') no-repeat;
+			background-size: 249px 235px;/*设置图片尺寸*/
+		}
+		.color{
+			width:400px;
+			height:200px;
+			opacity:0.5;/*透明度*/
+			/*border:5px solid #000;*/
+			/*margin:10px auto;*/
+			/*浏览器前缀：
+			火狐 -moz-
+			谷歌 -webkit-
+			IE 	 -ms-
+			欧朋 -o-*/
+			/*渐变色从盒子的最左边有红色变为蓝色 可以写很多个颜色 方向八个*/
+			background: -webkit-linear-gradient(left,red,blue);
+
+			/*transition用来监控属性的变化，如果被监控的属性发生变化(css和js都可以)，那么久通过运动运动过去*/
+			transition:width 5s linear;/*如果宽度发生变化 那么就在2秒内运动过去  all表示监控该元素的所有属性   linear匀速*/
+
+		}
+		.color:hover{
+			/*border:5px solid #000;*/
+			/*outline 实现的边框不占空间 对后面的元素没有影响*/
+			outline: 5px solid #000;
+			width:700px;
+			/*scale 水平缩放1.5  垂直 缩放0.6 盒子里面的内容也会缩放*/
+			transform: scale(1.5,0.6);
+		}
+		.transform{
+			width:300px;
+			height:50px;
+			background: -webkit-linear-gradient(left,red,yellow);
+
+			/*background:linear-gradient(to bottom right ,red ,green );*/
+			/*background:linear-gradient(0,red ,green );*/
+			/*background: linear-gradient(to right , transparent 50%,green 0);*/
+			transform:rotate(30deg);/*旋转30度 旋转后还是占用原来的位置
+			/*默认旋转中心是元素的中心点*/
+			/*修改旋转中心  距离左边250  上边25*/
+			/*transform-origin:250px 25px; */
+			/*如果旋转和缩放要一起用可以这样
+			transform:rotate(30deg) scale(1.5,0.6);*/
+			/*transform:skew(30deg,30deg);/*横向扭曲30度 纵向扭曲30度 */
+			/*transform: translate(100px,50px);/*水平平移100垂直平移50 不脱离文档流*/
+
+			/*background:radial-gradient(100px at center ,red ,green );  径向渐变*/
+		}
+		.center{
+			width:300px;
+			/*height:260px;*/
+			background:-webkit-linear-gradient(left,red,blue);
+			opacity: 0.5;
+			z-index: 1000;
+			/*元素有固定的宽高*/
+			/*position: absolute;
+			left:0;
+			top:0;
+			right:0;
+			bottom:0;
+			margin: auto;*/
+			/*position: absolute;
+			top:50%;
+			left:50%;
+			margin-top:-130px;
+			margin-left:-150px;*/
+			/*元素没有固定的高度的居中*/
+			position: absolute;
+			left:50%;
+			top:50%;
+			transform:translate(-50%,-50%);
+		}
+		.frame{
+			width:100px;
+			height:30px;
+			background:#f40;
+			animation: hd 3s linear 2s infinite;
+			/*animation-name:hd;*//*指定运动名称*/
+			/*animation-duration: 3s;*//*指定运动时间*/
+			/*animation-delay: 2s*//*延迟两秒在运动*/
+			/*animation-iteration-count: 2;*//*执行两次 infinite循环*/
+			/*animation-direction: alternate;*//*轮流反向*/
+			animation-fill-mode: forwards;
+			/*运动填充  动画运动完毕保存最后一帧的状态*/
+		}
+		.frame:hover{
+			animation-play-state: paused;/*暂停动画*/
+			animation-play-state: running;/*继续动画*/
+		}
+		@keyframes hd{
+			/*from{
+				width:100px;
+			}to{
+				width:1000px;
+			}*/
+			0{width:100px;}50%{width:1000px;}100%{width:100px;}
+		}
+		.eg{
+			width:500px;
+			height:500px;
+			margin: 0 auto;
+			/*border:1px solid #000;*/
+			position: relative;
+			 
+		}
+		.eg .zp{
+			width:100%;
+			height:100%;
+			transition:all 3s;
+		}
+		.eg .zz{
+			width:300px;
+			position: absolute;
+			left:66px;
+			top:67px;
+			background-size: 100% 100%;
+		}
+		ul{
+			
+			list-style: none;
+			width:500px;
+			/*height:500px;*/
+			border:1px solid #666;
+			display:flex;/*将这个盒子变成弹性盒子*/
+			/*弹性盒子模型容器中的项目默认在主轴（main size）排列*/
+			/*如果子元素的宽度大于父级元素的宽度 那么子元素均分父级元素
+			主轴的方向可以设置 不管怎么样设置主轴的方向都和交叉轴是垂直的*/
+			/*flex-direction: row-reverse;/*主轴为水平方向 起点在右端*/
+			/*flex-direction: column;/*主轴为垂直方向 起点在上端*/
+			/*flex-direction: column-reverse;/*垂直方向 起点在低端*/
+			/*设置主轴的排列方式 默认左对齐*/
+			/*justify-content: flex-end;/*右对齐*/
+			/*justify-content: center;/*居中*/
+			/*justify-content: space-between;项目之间的距离相等*/
+			/*justify-content: space-around;/*每个项目两侧的距离相等*/
+			/*设置交叉轴的排列方式*/
+			/*align-items: flex-start;/*交叉轴的起点对齐*/
+			/*align-items: flex-end;/*交叉轴的终点对齐*/
+			/*align-items: center;/*交叉轴的中点对齐*/
+			/*align-items: baseline;/*项目第一行文字的基线对齐*/
+			/*项目换行*/
+			/*flex-wrap: wrap;/*一行能放几个放几个*/
+			/*指定多行在交叉轴上的对齐方式*/
+			/*align-content: flex-start;/*与交叉轴的起点对齐*/
+			/*align-content: flex-end;/*与交叉轴的终点对齐*/
+			/*align-content: center;/*与交叉轴的中点对齐*/
+			/*align-content: space-between;/*与交叉轴的两端对齐，轴线之间的间隔平均分配*/
+			/*align-content: space-around;/*每根轴线两端的间隔相等*/
+			
+			/*flex:1*/  
+		}
+		ul li{
+			width:200px;
+			height:100px;
+			background-color: #f40;
+			border:1px solid #000;
+			line-height: 100px;
+			text-align: center;
+		}
+		.flex{
+			width:500px;
+			height:500px;
+			background-color: red;
+			display:flex;   /*设置这个盒子为弹性盒子*/
+		}
+		.flex div{
+			float:left;
+		}
+		.flex .left{
+			width:200px;
+			height:200px;
+			background-color: green;
+			flex-shrink: 1;  /*缩放*/
+			/*缩放的计算方法
+			(600-500)*(200*1)/(200*1+100*2+300*3)*/
+			flex-grow: 1;/*放大的属性*/
+			/*计算方法
+			var leng = 父级的宽度减去子级元素的宽度和
+			leng*1/(1+2+3)*/
+
+		}
+		.flex .middle{
+			width:100px;
+			height:200px;
+			background-color: blue;
+			flex-shrink: 2;
+		}
+		.flex .right{
+			width:300px;
+			height:200px;
+			background-color: yellow;
+			flex-shrink: 3;
+		}
+		ol{
+			display: grid;/*采用网格布局 父元素为容器 子元素为项目*/
+			grid-template-columns: 100px 100px 100px;/*每一列的宽度*/
+			/*grid-template-columns:repeat(auto-fill, 100px);*/
+			/*单元格的大小是固定的，但是容器的大小不确定。如果希望每一行（或每一列）容纳尽可能多的单元格，这时可以使用auto-fill关键字表示自动填充。*/
+			/*如果两列的宽度分别为1fr和2fr，就表示后者是前者的两倍。*/
+			/*repeat()接受两个参数，第一个参数是重复的次数，第二个参数是所要重复的值。*/
+  			grid-template-rows: repeat(3,100px);/*每一行的高度*/
+  			grid-row-gap: 20px;/*行与行直接的间距*/
+  			grid-column-gap: 20px;/*列与列直接的间距*/
+  			/*grid-gap: <grid-row-gap> <grid-column-gap>;*//*上面两个的简写 		grid-gap省略了第二个值，浏览器认为第二个值等于第一个值。*/
+  			list-style: none;
+		}
+		ol li:nth-child(odd){
+			background: pink
+		}
+		ol li:nth-child(even){
+			background: red;
+		}
+	</style> 
+</head>
+<body>
+	<p>我不知道，我该怎么办。</p>
+	<div class = "mohu"></div>
+	<div class = "box">很好，不错，很不错</div>
+	<div class="coulmn">分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果分栏的效果报纸上面的那种效果</div>
+	<div class = 'image'></div>
+	<div class="color">看看你变不变</div>
+	<div class = 'transform'></div>
+	<div class="center">居中</div>
+	<div class="frame">帧动画</div>
+	<div class="eg">
+		<img src="./image/zhuanpan.jpg" alt="" class="zp">
+		<img src="./image/zhizhen.png" alt="" class="zz">
+	</div>
+	<ul>
+		<li>弹</li>
+		<li>性</li>
+		<li style = "order :5;">盒</li><!-- 数值越大排列越靠后 -->
+		<li>模</li>
+		<li>型</li>
+	</ul>
+	<div class = "animated shake" style = "width:300px ; height: 100px;background:red; text-align: center;margin:0 auto">我是用animate.css库实现的 实现的方法是在这个元素的身上添加相应的class名</div>
+	<div class="flex">
+		<div class="left"></div>
+		<div class="middle"></div>
+		<div class="right"></div>
+	</div>
+	<ol>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+		<li>9</li>
+	</ol>
+	<script>
+		// 抽奖的程序
+		// var eg = document.getElementsByClassName('eg')[0];
+		// var zz = eg.getElementsByClassName('zz')[0];
+		// var zp = eg.getElementsByClassName('zp')[0];
+		// zz.onclick = function(){
+		// 	zp.style.transform = "rotate(1000deg)";
+		// }
+		
+	</script>
+</body>
+</html>

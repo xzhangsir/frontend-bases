@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>3D播放器</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		body{
+			background: url("../image/主题.jpg") no-repeat;
+			/*保证图片铺满整个网页*/
+			background-size: cover;	
+			overflow: hidden;
+		}
+		ul{
+			width:200px;
+			height:200px;
+			position: absolute;
+			bottom:150px;
+			left:50%;
+			margin-left:-100px;
+			transform-style:preserve-3d;
+			animation:zhuan 10s linear infinite;
+		}
+		@keyframes zhuan{
+			from{
+				transform: rotateX(-10deg) rotateY(0deg);
+			}
+			to{
+				transform: rotateX(-10deg) rotateY(360deg);
+
+			}
+		}
+		ul>li{
+			width:200px;
+			height:200px;
+			list-style: none;
+			font-size:60px;
+			line-height: 200px;
+			text-align: center;
+			position: absolute;
+			left:0;
+			top:0;
+			background: #000;
+		}
+		ul:hover{
+			animation-play-state: paused;/*暂停动画*/
+		}
+		ul:hover li img{			
+			opacity: 0.5;
+		}
+		ul li:hover img{
+			opacity: 1;
+			transform:scale(1.2,1.2);
+		}
+		ul>li:nth-child(1){
+			/*background: red;*/
+			transform:rotateY(60deg) translateZ(200px);
+		}
+		ul>li:nth-child(2){
+			/*background: green;*/
+			transform:rotateY(120deg) translateZ(200px);
+		}
+		ul>li:nth-child(3){
+			/*background: blue;*/
+			transform:rotateY(180deg) translateZ(200px);
+		}
+		ul>li:nth-child(4){
+			/*background: yellow;*/
+			transform:rotateY(240deg) translateZ(200px);
+
+		}
+		ul>li:nth-child(5){
+			/*background: purple;*/
+			transform:rotateY(300deg) translateZ(200px);
+
+		}
+		ul>li:nth-child(6){
+			/*background: pink;*/
+			transform:rotateY(360deg) translateZ(200px);
+		}
+		ul>li img{
+			width:200px;
+			height:200px;
+			border:5px solid skyblue;
+			box-sizing:border-box;
+		}
+		.xin{
+			width:200px;
+			position: absolute;
+			left:100px;
+			bottom:100px;
+			animation:xin 6s linear 0s infinite;
+		}
+		@keyframes xin{
+			0%{
+				left:100px;
+				bottom: 100px;
+				opacity: 0.8;
+			}
+			20%{
+				left:300px;
+				bottom: 300px;
+				opacity: 0;
+			}
+			40%{
+				left:800px;
+				bottom: 500px;
+				opacity: 0.8;
+			}
+			60%{
+				left:1000px;
+				bottom: 400px;
+				opacity: 0;
+			}
+			80%{
+				left:1200px;
+				bottom: 100px;
+				opacity: 0.8;
+			}
+			100%{
+				left:800px;
+				bottom: 50px;
+				opacity: 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<ul>
+		<li><img src="../image/zhangxueyou1.jpg" alt=""></li>
+		<li><img src="../image/zhangxueyou2.jpg" alt=""></li>
+		<li><img src="../image/zhangxueyou3.jpg" alt=""></li>
+		<li><img src="../image/zhangxueyou4.jpg" alt=""></li>
+		<li><img src="../image/zhangxueyou5.jpg" alt=""></li>
+		<li><img src="../image/zhangxueyou6.jpg" alt=""></li>
+		<!-- <li><img src="../image/ai1.jpg" alt=""></li>
+		<li><img src="../image/ai2.jpg" alt=""></li>
+		<li><img src="../image/ai3.jpg" alt=""></li>
+		<li><img src="../image/ai4.jpg" alt=""></li>
+		<li><img src="../image/ai5.jpg" alt=""></li>
+		<li><img src="../image/ai6.jpg" alt=""></li> -->
+	</ul>
+	<img src="../image/xin.png" class = "xin">
+	<audio src="../image/沙漠骆驼.mp3" autoplay="autoplay" loop="loop"></audio>
+</body>
+</html>

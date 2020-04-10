@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .box {
+      width: 391px;
+      height: 275px;
+      margin: 100px auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box ul {
+      width: 391px;
+      position: absolute;
+    }
+
+    .box ul li {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .box ul li a {
+      display: block;
+      position: relative
+    }
+
+    .box ul li p {
+      font-size: 16px;
+      color: #d6d6d6;
+      opacity: 0.8;
+    }
+
+    .box ul div {
+      width: 100%;
+      height: 70px;
+      background: rgba(0, 0, 0, 0.5);
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      text-align: center;
+      line-height: 70px;
+    }
+
+    .box span {
+      position: absolute;
+      bottom: 10px;
+      color: #fff;
+      font-size: 38px;
+      opacity: 0.5;
+      cursor: pointer;
+      transition: all .5s;
+    }
+
+    .box span:hover {
+      opacity: .8;
+    }
+
+    .box .next {
+      left: 10px;
+    }
+
+    .box .prev {
+      right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <ul>
+      <li style='opacity: 1'><a href="#">
+          <img src="1.png" alt="">
+          <div>
+            <p>富平高新区开展迎双节环境卫生集中整治</p>
+          </div>
+        </a></li>
+      <li style="opacity: 0"><a href="#">
+          <img src="2.png" alt="">
+          <div>
+            <p>李克强</p>
+          </div>
+        </a></li>
+    </ul>
+    <span class='next'><</span>
+    <span class='prev'>></span>
+  </div>
+  <script>
+    var next = document.getElementsByClassName('next')[0];
+    var prev = document.getElementsByClassName('prev')[0];
+    var li = document.getElementsByTagName('li');
+    var len = li.length;
+    var n = 0;//记录当前是哪张显示
+    var m = 0;
+    var act = true;
+    next.onclick = function () {
+      n++;
+      n !== len ? n = n : n = 0;
+      show(n);
+    }
+    prev.onclick = function () {
+      console.log(n)
+      n--;
+      n !== -1 ? n = n : n = len - 1;
+      show(n);
+    }
+    function show(n) {
+      if (act) {
+        act = false;
+        var timer = setInterval(function () {
+          var op = Number(li[n].style.opacity);
+          var lp = Number(li[m].style.opacity);
+          if (op == 1) {
+            clearInterval(timer);
+            m = n;
+            act = true;
+            return;
+          }
+          li[m].style.opacity = lp - 0.02;
+          li[n].style.opacity = op + 0.02;
+        }, 16)
+      }
+    }
+  </script>
+</body>
+
+</html>
