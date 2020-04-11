@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery中的Promise</title>
+	<script src = " http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+	<button>获取数据</button>
+	<script>
+		$('button').on('click',function(){
+			$.ajax({
+				url:'./1.txt',
+				type:'get',
+				dataType:'txt',
+				// success:function(data){
+				// 	console.log(data);
+				// }
+			})
+			.then(function(data){
+				console.log(data);
+			})
+		})
+	</script>
+</body>
+</html>

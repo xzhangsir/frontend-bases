@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>二维数组贪吃蛇</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		.content{
+			width:70%;
+			height:500px;
+			box-shadow: 0 0 50px 10px #f99;
+			margin:20px auto;
+			position: relative;
+		}
+		.food{
+			background-image: url(apple.jpg);
+			background-size:100% 100%;
+		}
+		.head{
+			background: green;
+			border-radius: 5px;
+		}
+		.body{
+			border-radius: 5px;
+		}
+		.open{
+			width:359px;
+			height:300px;
+			position: absolute;
+			top:50%;
+			left:50%;
+			transform: translate(-50%,-50%);
+		}
+	</style>
+</head>
+<body>
+	<div class="score">当前的分：</div>
+	<div class="content">
+		<img src="open.png" alt="" class = "open" title = "点击开始游戏">
+	</div>
+	<script>
+		var timer;//定时器
+		function $(result){
+			var result = document.querySelectorAll(result);
+			if(result.length && result.length !== 1){
+				return result;
+			}else{
+				return result[0];
+			}
+		}
+		function init(){
+			//地图属性
+			this.wapW = parseInt(window.getComputedStyle(content).width);
+			this.wapH = parseInt(window.getComputedStyle(content).height);
+			this.wapDiv = content;
+			this.isStop = true;//是否暂停
+			// 食物的属性
+			this.foodW = 20;
+			this.foodH = 20;
+			this.foodX = 0;
+			this.foodY = 0;
+			this.isfood = false;
+			// 蛇的属性
+			this.snakeW = 20;
+			this.snakeH = 20;
+			this.snakeBody = [[4,1,'head'],[3,1,'body'],[2,1,'body']];
+			//游戏属性
+			this.speed = 150;
+			this.direct = "right";
+			this.score = 0;//分数
+		}	
+		var content = $('.content');		
+		// 随机生成食物
+		function food(){
+			var food = document.createElement('div');
+			food.style.width = this.foodW  + 'px';
+			food.style.height = this.foodH +'px';
+			food.style.position = 'absolute';
+			this.foodX = Math.floor(Math.random()*this.wapW/20);
+			this.foodY = Math.floor(Math.random()*this.wapH/20);
+			food.style.left = this.foodX * 20 + 'px';
+			food.style.top = this.foodY * 20 + 'px';
+			this.wapDiv.appendChild(food).className = 'food';
+		}
+		//随机生成蛇
+		function snake(){
+			for(var i = 0 ; i < this.snakeBody.length ; i++){
+				var snake = document.createElement('div');
+				snake.style.width = this.snakeW + 'px';
+				snake.style.height = this.snakeH + 'px';
+				snake.style.position = 'absolute';
+				snake.style.left = this.snakeBody[i][0] * 20 + 'px';
+				snake.style.top = this.snakeBody[i][1] * 20 + 'px';
+				snake.classList.add(this.snakeBody[i][2]);
+				this.wapDiv.appendChild(snake).classList.add('snake');
+				// 随机色
+				if(i != 0){
+					snake.style.background = 'rgb('+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')';	
+				}
+			}				
+		}
+		// 蛇运动
+		function move(){
+			for(var i = this.snakeBody.length - 1; i > 0; i--){
+				this.snakeBody[i][0] = this.snakeBody[i-1][0];
+				this.snakeBody[i][1] = this.snakeBody[i-1][1];
+			}
+			switch(this.direct){
+				case 'left':
+					this.snakeBody[0][0] -= 1;
+					break;
+				case 'right':
+					this.snakeBody[0][0] += 1;
+					break;
+				case 'top':
+					this.snakeBody[0][1] -= 1;
+					break;
+				case 'bottom':
+					this.snakeBody[0][1] += 1;
+					break;
+				default:
+					return;
+			}
+			removeClass('snake');
+			snake();
+			// 吃到食物检测
+			if(this.snakeBody[0][0] === this.foodX && this.snakeBody[0][1] === this.foodY){
+				var newX = this.snakeBody[this.snakeBody.length - 1][0];
+				var newY = this.snakeBody[this.snakeBody.length - 1][1];
+				switch(this.direct){
+					case 'left':
+						this.snakeBody.push([newX + 1,newY,'body']);
+						break;
+					case 'right':
+						this.snakeBody.push([newX - 1,newY,'body']);
+						break;
+					case 'top':
+						this.snakeBody.push([newX,newY - 1,'body']);
+						break;
+					case 'bottom':
+						this.snakeBody.push([newX,newY + 1,'body']);
+						break;
+					default:
+						clearInterval(timer);
+						break;
+				}
+				this.score++;//吃到食物分数加1
+				removeClass('food');
+				food();
+			}
+			// 分数显示到页面
+			$('.score').innerHTML = "当前的分："+this.score;
+			// 碰到画布边缘检测
+			if(this.snakeBody[0][0] < 0 || this.snakeBody[0][0] > this.wapW/20 || this.snakeBody[0][1] < 0 || this.snakeBody[0][1] > this.wapH/20){
+				over();
+			}	
+			// 自身碰撞检测
+			var meX = this.snakeBody[0][0];
+			var meY = this.snakeBody[0][1]; 
+			for(var i = 1; i < this.snakeBody.length ; i++){
+				if(meX == this.snakeBody[i][0] && meY == this.snakeBody[i][1]){
+					over();
+				}
+			}
+		}
+		// 按键控制运动
+		function bindEven(){
+			document.onkeydown = function(e){
+				var code = e.keyCode;
+				setDerict(code);
+			}
+		}
+		function setDerict(code){
+			if(code == 37 && this.direct !== 'right'){
+				this.direct = 'left';
+			}
+			if(code == 38 && this.direct !== 'bottom'){
+				this.direct = 'top';
+			}
+			if(code == 39 && this.direct !== "left"){
+				this.direct = 'right';
+			}
+			if(code == 40 && this.direct !== 'top'){
+				this.direct = 'bottom';
+			}
+			if(code == 32){
+				if(this.isStop){
+					this.autoDir = this.direct;
+					this.isStop = false;
+					this.direct = '';				
+				}else{
+					this.direct = this.autoDir;
+					this.isStop = true;
+					move();
+				}
+			}
+		}		
+		// 删除来类名为result的元素
+		function removeClass(result){
+			var result = document.getElementsByClassName(result);
+			while(result.length > 0){
+				result[0].parentNode.removeChild(result[0]);
+			}
+		}
+		$('.open').onclick = function(){
+			this.style.display = 'none';
+			init();
+			food();
+			snake();
+			timer = setInterval(move,speed)
+			bindEven();
+		}		
+		//游戏结束 
+		function over(){
+			setTimeout(function(){
+				removeClass('food');
+				removeClass('snake');		
+			},1000)
+			clearInterval(timer);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>头移尾</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		.wap{
+			width:700px;
+			height:400px;
+			margin: 50px auto;
+			border: 1px solid #333;
+			position: relative;
+		}
+		span{
+			width:20px;
+			height:20px;
+			background: #f99;
+			position: absolute;
+			border-radius: 5px;
+		}
+		.wap i{
+			display: block;
+			height:20px;
+			width:20px;
+			background: red;
+			position: absolute;
+			border-radius: 5px;
+		}
+		.peizhi{
+			width:190px;
+			height:120px;
+			border:1px solid #000;
+			position: absolute;
+			left: 0;
+			top:0;
+			padding:10px;
+			line-height: 30px;
+		}
+		.open{
+			width:85px;
+			height:30px;
+		}
+		.Ai{
+			width:85px;
+			height:30px;
+		}
+		select{
+			text-align-last:center;
+		}
+	</style>
+</head>
+<body>
+	<div class="wap" id = "wap"></div>
+	<div class = 'peizhi'>
+		<div class="score">当前得分：0</div>
+		<div class = 'record'>最高分：0</div>
+		<p>
+			选择难度：
+			<select>
+				<option value = '100'>初级</option>
+				<option value = '80' selected>中级</option>
+				<option value = '60'>高级</option>
+				<option value = '40'>努努力</option>
+				<option value = '20'>能吃到算我输</option>
+			</select>
+		</p>
+		<button class="open">开始游戏</button>
+		<button class = 'Ai'>上帝模式</button>
+	</div>
+	<script>
+		var info = {
+			len:3,//蛇的长度
+			getSpeed:function(){//移动速度
+				return document.getElementsByTagName('select')[0].value;
+			},
+			record:0,//记录最高分
+			recordEl:document.getElementsByClassName('record')[0],//记录最高分的元素
+			ai:document.getElementsByClassName('Ai')[0],
+			max:function(score){//最高分判断
+				if(score > info.record){
+					info.record = score;
+				}
+				info.recordEl.innerHTML = '最高分：'+info.record;
+			},
+			width:20,//蛇的宽度
+			W:700,//地图的宽度
+			H:400,//地图的高度
+			isact:false,//游戏是否开始
+			wap:document.getElementById('wap'),
+			scoreEl:document.getElementsByClassName('score')[0],//得分的元素
+			score:0,
+			over:function(){//游戏结束
+				clearInterval(timer);//清空定时器
+				snake.body = [];//清空存储蛇的数组
+				snake.dir = 'right';	//蛇的默认移动方向
+				info.max(info.score);		//调用判断最高分的方法
+				info.score = 0;
+				info.scoreEl.innerHTML = '当前得分：'+ info.score;
+				info.open.disabled = false;
+				info.isact = false;
+				//删除画布上原来的蛇
+				info.wap.innerHTML = '';
+				info.ai.disabled = false;
+			},
+			active:function(){//开始游戏
+				snake.into();
+				food.create();
+				timer = setInterval(snake.move,info.getSpeed());
+			},
+			open:document.getElementsByClassName('open')[0]
+		}
+		var snake = {
+			body:[],//蛇的所有span
+			dir:"right",//蛇开始的移动方向
+			al:false,
+			into:function(){//初始化一条蛇
+				for(var i = 0 ; i < info.len ; i++){
+					var span = document.createElement('span');
+					info.wap.appendChild(span);
+					span.style.left = info.width * i + "px";
+					span.style.top = 0;
+					snake.body.push(span);
+					span.className = 'snake';
+				}
+			},
+			move:function(){//蛇移动
+				var snakeX = snake.body[snake.body.length - 1].style.left;
+				var snakeY = snake.body[snake.body.length - 1].style.top;
+				var head = snake.body[0];	
+				if(snake.al){
+					var point = {
+						x:parseInt(snakeX),
+						y:parseInt(snakeY)
+					}
+					if(point.x !== food.X){
+						if(point.x > food.X && snake.dir !== 'right'){
+							snake.dir = 'left';
+						}
+						if(point.x < food.X && snake.dir !== 'left'){
+							snake.dir = 'right';
+						}
+					}else{
+						if(point.y > food.Y && snake.dir !== 'bottom'){
+							snake.dir = 'top';
+						}
+						if(point.y < food.Y && snake.dir !== 'top'){
+							snake.dir = 'bottom';
+						}
+					}
+				}
+				if(snake.dir == 'left'){
+					head.style.left = parseInt(snakeX) - info.width + "px";
+					head.style.top = parseInt(snakeY) + "px";
+				}
+				if(snake.dir == 'right'){
+					head.style.left = parseInt(snakeX) + info.width + "px";
+					head.style.top = parseInt(snakeY) + "px";
+				}
+				if(snake.dir == 'top'){
+					head.style.left = parseInt(snakeX) + "px";
+					head.style.top = parseInt(snakeY) - info.width + "px";
+				}
+				if(snake.dir == 'bottom'){
+					head.style.left = parseInt(snakeX) + "px";
+					head.style.top = parseInt(snakeY) + info.width+ "px";
+				}
+				snake.body.push(snake.body.shift());
+
+				// 吃到食物检测
+				var snakeHeadX = parseInt(snake.body[snake.body.length - 1].style.left);
+				var snakeHeadY = parseInt(snake.body[snake.body.length - 1].style.top);
+				if(snakeHeadX == food.X && snakeHeadY == food.Y){
+					food.el.remove();
+					food.create();
+					// 蛇身体自增
+					var span = document.createElement('span');
+					span.style.left = food.X + 'px';
+					span.style.top = food.Y + 'px';
+					info.wap.appendChild(span);
+					span.className = 'snake';
+					snake.body.unshift(span);	
+					info.scoreEl.innerHTML = '当前得分：'+ (++info.score);
+				} 
+				// 碰到画布边缘
+				if(snakeHeadX >= info.W || snakeHeadX < 0 || snakeHeadY >= info.H || snakeHeadY < 0){
+					if(!snake.ai){
+						info.over();
+					}
+				}
+				// 碰到自己
+				for(var i = 0 ; i < snake.body.length - 1; i++){
+					if(snakeHeadX == parseInt(snake.body[i].style.left) &&snakeHeadY == parseInt(snake.body[i].style.top)){
+						if(!snake.ai){
+							info.over();		
+						}
+					}
+				}
+			}
+		}
+		var food = {
+			X:0,
+			Y:0,
+			el:null,
+			create:function(){//初始化食物
+				var i = document.createElement('i');
+				food.el = i;
+				info.wap.appendChild(i);
+				food.X = Math.round(Math.random()*(info.W-20)/20)*20;
+				food.Y = Math.round(Math.random()*(info.H-20)/20)*20;
+				i.style.left = food.X +'px';
+				i.style.top = food.Y +'px';
+			}
+		}
+		// 键盘事件
+		window.onkeydown = function(e){
+			if(e.keyCode == 37 && snake.dir !== 'right'){
+				snake.dir = 'left';
+			}
+			if(e.keyCode == 38 && snake.dir !== 'bottom'){
+				snake.dir = 'top';
+			}
+			if(e.keyCode == 39 && snake.dir !== 'left'){
+				snake.dir = 'right';
+			}
+			if(e.keyCode == 40 && snake.dir !== 'top'){
+				snake.dir = 'bottom';
+			}	
+		}
+		//点击开始游戏按钮
+		info.open.onclick = function(){
+			if(!info.isact){
+				this.disabled = true;
+				info.active();	
+				info.isact = true;
+			}
+		}
+		info.ai.onclick = function(){
+			snake.al = true;
+			info.ai.disabled = true;
+			if(info.ai.innerHTML == '取消上帝模式'){
+				snake.al = false;
+				this.innerHTML = '上帝模式';
+				return;
+			}
+			info.ai.innerHTML = "取消上帝模式";
+		}
+	</script>
+</body>
+</html>

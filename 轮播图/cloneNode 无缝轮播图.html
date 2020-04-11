@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>cloneNode无缝轮播图</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      list-style: none
+    }
+
+    a {
+      text-decoration: none
+    }
+
+    .wrap {
+      width: 1225px;
+      height: 460px;
+      margin: 50px auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .imgList {
+      width: 10000px;
+      height: 460px;
+      position: absolute;
+    }
+
+    .imgList li {
+      float: left;
+    }
+
+    .next,
+    .prev {
+      position: absolute;
+      top: 50%;
+      margin-top: -22px;
+      opacity: .7;
+      cursor: pointer;
+      transition: all .7;
+    }
+
+    .next:hover,
+    .prev:hover {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    .next {
+      left: 20px;
+    }
+
+    .prev {
+      right: 20px;
+    }
+
+    .radioList {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+
+    .radio {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-right: 20px;
+      cursor: pointer;
+      transition: all .5s;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .radio:hover {
+      background: #f40;
+    }
+
+    .focus {
+      background: #f40;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <ul class="imgList" style='left:0'>
+      <li><a href="#"><img src="1.jpg" alt=""></a></li>
+      <li><a href="#"><img src="2.jpg" alt=""></a></li>
+      <li><a href="#"><img src="3.jpg" alt=""></a></li>
+      <li><a href="#"><img src="4.jpg" alt=""></a></li>
+      <li><a href="#"><img src="5.jpg" alt=""></a></li>
+      <li><a href="#"><img src="6.jpg" alt=""></a></li>
+    </ul>
+    <img src="l.png" alt="" class='next'>
+    <img src="r.png" alt="" class='prev'>
+    <div class="radioList"></div>
+  </div>
+  <script>
+    function $(result) {
+      var result = document.querySelectorAll(result);
+      if (result.length && result.length !== 1) {
+        return result;
+      } else {
+        return result[0];
+      }
+    }
+    var imgList = $('.imgList');
+    var li = $('.imgList li');
+    var len = li.length;
+    var imgW = 1225;
+    var count = 0;
+    var act = true;
+    $('.next').onclick = function () {
+      if (act) {
+        act = false;
+        count++;
+        if (count !== len) {
+          var timer = setInterval(function () {
+            var le = parseInt(imgList.style.left);
+            if (le <= -imgW * count) {
+              clearInterval(timer);
+              act = true;
+              return;
+            }
+            imgList.style.left = le - 25 + 'px';
+            hidd();
+            $('.radio')[count].classList.add('focus');
+          }, 16)
+        } else {
+          count = 0;
+          var clone = li[0].cloneNode(true);
+          imgList.appendChild(clone);
+          var timer = setInterval(function () {
+            var le = parseInt(imgList.style.left);
+            if (le <= -imgW * len) {
+              clearInterval(timer);
+              clone.remove();
+              imgList.style.left = 0;
+              act = true;
+              return;
+            }
+            imgList.style.left = le - 25 + 'px';
+            hidd();
+            $('.radio')[count].classList.add('focus');
+          }, 16)
+        }
+      }
+    }
+    $('.prev').onclick = function () {
+      if (act) {
+        act = false;
+        count--;
+        if (count >= 0) {
+          var timer = setInterval(function () {
+            var le = parseInt(imgList.style.left);
+            if (le >= -imgW * count) {
+              clearInterval(timer);
+              act = true;
+              return;
+            }
+            imgList.style.left = le + 25 + 'px';
+            hidd();
+            $('.radio')[count].classList.add('focus');
+          }, 16)
+        } else {
+          count = len - 1;
+          var clone = li[len - 1].cloneNode(true);
+          imgList.insertBefore(clone, li[0]);
+          imgList.style.left = -imgW + 'px';
+          var timer = setInterval(function () {
+            var le = parseInt(imgList.style.left);
+            if (le == 0) {
+              imgList.style.left = -imgW * count + 'px';
+              clone.remove();
+              clearInterval(timer);
+              act = true;
+              return;
+            }
+            imgList.style.left = le + 25 + 'px';
+            hidd();
+            $('.radio')[count].classList.add('focus');
+          }, 16)
+        }
+      }
+    }
+    var time = setInterval(function () {
+      $('.next').click();
+    }, 1500)
+    $('.wrap').onmouseover = function () {
+      clearInterval(time);
+    }
+    $('.wrap').onmouseout = function () {
+      time = setInterval(function () {
+        $('.next').click();
+      }, 1500)
+    }
+    // 小圆点
+    function createRadio() {
+      for (var i = 0; i < len; i++) {
+        var radio = document.createElement('span');
+        $('.radioList').appendChild(radio);
+        radio.className = 'radio';
+      }
+    }
+    createRadio()
+    $('.radio')[0].classList.add('focus');
+    function hidd() {
+      for (var i = 0; i < len; i++) {
+        $('.radio')[i].classList.remove('focus');
+      }
+    }
+    for (let i = 0; i < len; i++) {
+      $('.radio')[i].onclick = function () {
+        clearInterval(time);
+        if (count + 1 > i) {
+          count = i + 1;
+          $('.prev').click();
+        }
+        if (count < i) {
+          count = i - 1;
+          $('.next').click();
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
