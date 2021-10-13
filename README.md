@@ -6,7 +6,7 @@
 
 ##获取当前分支下的文件  git pull origin (分支名)
 
-##合并分支到master    git merge (分支名)
+##合并某个分支到当前分支    git merge (某个分支名)
 
 ##本地仓库和远程仓库关联 git remote add origin <url>  
 
