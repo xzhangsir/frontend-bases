@@ -95,6 +95,84 @@ console.log(list) */
    },Array.isArray(data) ? [] : {})
  }
 
+//简易节流
+function throttle(func,delay){
+  let pre = 0;
+  return function(){
+    let now = new Date()
+    const context = this,
+        args = arguments;
+    if(now - pre > delay){
+      func.apply(context,args)
+      pre = now;
+    }
+  }
+}
+
+window.addEventListener("resize",throttle(function(){
+  console.log(123)
+},1000))
+
+
+//简易防抖
+function debounce (func,delay){
+  let timer;
+  return function(){
+    const context = this,
+        args = arguments;
+    clearTimeout(timer)
+    timer = setTimeout(function(){
+      func.apply(context,args)
+    },delay)
+  }
+}
+
+//scroll 图片懒加载
+<script>	
+  const images = document.querySelectorAll("img");
+
+  window.addEventListener("scroll", (e)=>{
+    images.forEach(image=>{
+      const imgTop = image.getBoundingClientRect().top;
+      if(imgTop <= window.innerHeight){
+        const src = image.getAttribute("src")
+        if(!src){
+          const data_src = image.getAttribute("data-src")
+          image.setAttribute("src",data_src)
+        }
+      }
+      console.log("gun")
+    })
+  })
+</script>
+
+//IntersectionObserver图片懒加载
+
+<script>
+		
+  const images = document.querySelectorAll("img")
+
+  const callback = (entries)=>{
+
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const image = entry.target;
+        const data_src = image.getAttribute("data-src")
+        image.setAttribute("src",data_src)
+        observer.unobserve(image)
+        console.log("触发")
+      }
+    })
+
+  }
+
+  const observer = new IntersectionObserver(callback)
+
+  images.forEach(image=>{
+    observer.observe(image)
+  })const images = document.querySelectorAll("img")
+  
+</script> 
 
 
 
