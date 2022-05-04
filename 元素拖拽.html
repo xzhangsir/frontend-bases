@@ -1,0 +1,336 @@
+<!-- <!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    .wrapper {display: flex;border: 1px solid orangered;padding: 10px;}
+    .col {border: 1px solid #808080;height: 500px;width: 200px;margin: 0 10px;padding: 10px;}
+    .item {border: 1px solid #808080;margin: 5px 0;}
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="col1 col">
+            <div class="item" id="item1" draggable="true">item1</div>
+            <div class="item" id="item2" draggable="true">item2</div>
+            <div class="item" id="item3" draggable="true">item3</div>
+        </div>
+        <div class="col2 col"></div>
+        <div class="col3 col"></div>
+        <div class="col4 col"></div>
+    </div>
+    <script>
+        let cols = document.getElementsByClassName('col');
+        for (let col of cols) {
+            col.ondragenter = e => { 
+                console.log('放置元素 ondragenter', '<' + e.dataTransfer.getData('item') + '>'); 
+            }
+            col.ondragover = e => {
+                e.preventDefault();
+                console.log('放置元素 ondragover', '<' + e.dataTransfer.getData('item') + '>');
+            }
+            col.ondragleave = e => { 
+                console.log('放置元素 ondragleave', '<' + e.dataTransfer.getData('item') + '>'); 
+            }
+            col.ondrop = function(e) {
+                console.log('放置元素 ondrop', '<' + e.dataTransfer.getData('item') + '>');
+                var sourceNode = document.getElementById(e.dataTransfer.getData('item'));   
+				var clonedNode = sourceNode.cloneNode(true); 
+				clonedNode.removeAttribute("id"); 
+				clonedNode.removeAttribute("draggable"); 
+                this.append(clonedNode);
+            }
+        }
+        let items = document.getElementsByClassName('item');
+        for (let item of items) {
+            item.ondragstart = e => {
+                console.log('拖拽元素 ondragstart');
+                e.dataTransfer.setData('item', e.target.id);
+            }
+            item.ondragend = e => {
+            	// console.log("end",e.target.id)
+              console.log('拖拽元素 ondragend');
+            }
+        }
+    </script>
+</body>
+</html>
+ -->
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+        <style>
+            .item {
+                border: 1px solid #1da921;
+                width: 180px;
+                border-radius: 5px;
+                box-shadow: 0 0 5px 0 #b3b3b3;
+                margin: 5px auto;
+                background: #fff;
+            }
+            .item.active {
+                border-style: dashed;
+            }
+            .item-header {
+                font-size: 12px;
+                color: #9e9e9e;
+                padding: 3px 5px;
+            }
+            .item-main {
+                padding: 5px;
+                font-size: 14px;
+                color: #424242;
+                height: 36px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+            }
+            .item-header-point {
+                background: #ccc;
+                float: right;
+                padding: 0 4px;
+                min-width: 10px;
+                text-align: center;
+                color: #fff;
+                border-radius: 50%;
+            }
+            .col {
+                border: 1px solid #d2d2d2;
+                flex-grow: 1;
+                width: 180px;
+                height: 100%;
+                margin: 0 2px;
+                background: #eee;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .col-header {
+                height: 40px;
+                line-height: 40px;
+                background: #1DA921;
+                color: #fff;
+                text-align: center;
+            }
+            .col-main {
+                overflow: auto;
+                flex-grow: 1;
+            }
+            .col-main.active {
+                background: #00ad23;
+                opacity: 0.1;
+            }
+            .task-wrapper {
+                display: flex;
+                height: 400px;
+                width: 700px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="text/babel">
+            const STATUS_TODO = 'STATUS_TODO';
+            const STATUS_DOING = 'STATUS_DOING';
+            const STATUS_DONE = 'STATUS_DONE';
+            
+            const STATUS_CODE = {
+                STATUS_TODO: '待处理',
+                STATUS_DOING: '进行中',
+                STATUS_DONE: '已完成'
+            }
+            let tasks = [{
+                id: 0,
+                status: STATUS_TODO,
+                title: '每周七天阅读五次，每次阅读完要做100字的读书笔记',
+                username: '小夏',
+                point: 10
+            }, {
+                id: 1,
+                status: STATUS_TODO,
+                title: '每周七天健身4次，每次健身时间需要大于20分钟',
+                username: '橘子🍊',
+                point: 5
+            }, {
+                id: 2,
+                status: STATUS_TODO,
+                title: '单词*100',
+                username: '┑(￣Д ￣)┍',
+                point: 2
+            }, {
+                id: 3,
+                status: STATUS_TODO,
+                title: '单词*150',
+                username: '┑(￣Д ￣)┍',
+                point: 2
+            }, {
+                id: 4,
+                status: STATUS_TODO,
+                title: '单词*200',
+                username: '┑(￣Д ￣)┍',
+                point: 2
+            }, {
+                id: 5,
+                status: STATUS_TODO,
+                title: '单词*250',
+                username: '┑(￣Д ￣)┍',
+                point: 2
+            }]
+            
+            class TaskItem extends React.Component {
+                handleDragStart = (e) => {
+                    this.props.onDragStart(this.props.id);
+                }
+                render() {
+                    let { id, title, point, username, active, onDragEnd } = this.props;
+                    return (
+                        <div 
+                            onDragStart={this.handleDragStart}
+                            onDragEnd={onDragEnd}
+                            id={`item-${id}`} 
+                            className={'item' + (active ? ' active' : '')}
+                            draggable="true"
+                        >
+                            <header className="item-header">
+                                <span className="item-header-username">{username}</span>
+                                <span className="item-header-point">{point}</span>
+                            </header>
+                            <main className="item-main">{title}</main>
+                        </div>
+                    );
+                }
+            }
+            
+            class TaskCol extends React.Component {
+                state = {
+                    in: false
+                }
+                handleDragEnter = (e) => {
+                    e.preventDefault();
+                    if (this.props.canDragIn) {
+                        this.setState({
+                            in: true
+                        })
+                    }
+                }
+                handleDragLeave = (e) => {
+                    e.preventDefault();
+                    if (this.props.canDragIn) {
+                        this.setState({
+                            in: false
+                        })
+                    }
+                }
+                handleDrop = (e) => {
+                    e.preventDefault();
+                    this.props.dragTo(this.props.status);
+                    this.setState({
+                        in: false
+                    })
+                }
+                render() {
+                    let { status, children } = this.props;
+                    return (
+                        <div 
+                            id={`col-${status}`} 
+                            className={'col'}
+                            onDragEnter={this.handleDragEnter}
+                            onDragLeave={this.handleDragLeave}
+                            onDragOver={this.handleDragEnter}
+                            onDrop={this.handleDrop}
+                            draggable="true"
+                        >
+                            <header className="col-header">
+                                {STATUS_CODE[status]}
+                            </header>
+                            <main className={'col-main' + (this.state.in ? ' active' : '')}>
+                                {children}
+                            </main>
+                        </div>
+                    );
+                }
+            }
+            
+            class App extends React.Component {
+                state = {
+                    tasks: tasks,
+                    activeId: null
+                }
+                /**
+                 * 传入被拖拽任务项的 id
+                 */
+                onDragStart = (id) => {
+                    this.setState({
+                        activeId: id
+                    })
+                }
+                
+                dragTo = (status) => {
+                    let { tasks,  activeId} = this.state;
+                    let task = tasks[activeId];
+                    if (task.status !== status) {
+                        task.status = status;
+                        this.setState({
+                            tasks: tasks
+                        })
+                    }
+                    this.cancelSelect();
+                }
+                
+                cancelSelect = () => {
+                    this.setState({
+                        activeId: null
+                    })
+                }
+                
+                render() {
+                    let { tasks, activeId } = this.state;
+                    let { onDragStart, onDragEnd, cancelSelect } = this;
+                    return (
+                        <div className="task-wrapper">
+                            {
+                                Object.keys(STATUS_CODE).map(status => 
+                                    <TaskCol 
+                                        status={status} 
+                                        key={status} 
+                                        dragTo={this.dragTo}
+                                        canDragIn={activeId != null && tasks[activeId].status !== status}>
+                                        { tasks.filter(t => t.status === status).map(t => 
+                                            <TaskItem
+                                                key={t.id}
+                                                active={t.id === activeId}
+                                                id={t.id}
+                                                title={t.title} 
+                                                point={t.point} 
+                                                username={t.username}
+                                                onDragStart={onDragStart}
+                                                onDragEnd={cancelSelect}
+                                            />)
+                                        }
+                                    </TaskCol>
+                                )
+                            }
+                        </div>
+                    )
+                }
+            }
+            
+            ReactDOM.render(
+                <App />,
+                document.getElementById('app')
+            );
+        </script>
+    </body>
+</html>

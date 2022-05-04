@@ -1,10 +1,9 @@
-
 //防抖    triggleNow ture 第一次进来就执行  false 延时time后执行
 function debounce(fn, time, triggleNow) {
   var t = null
   var debounce = function () {
     var _self = this,
-      args = arguments;
+      args = arguments
     if (t) {
       clearTimeout(t)
     }
@@ -35,7 +34,7 @@ function throttle(fn, delay) {
   return function () {
     var _self = this,
       args = arguments,
-      cut = new Date().getTime();
+      cut = new Date().getTime()
     clearTimeout(t)
     if (cur - begin >= delay) {
       fn.apply(_self, args)
@@ -57,7 +56,7 @@ var getTimeStamp = function () {
   return getTimeStamp()
 }
 
-// 动态替换属性值 
+// 动态替换属性值
 
 /* var data = [
   {
@@ -84,51 +83,60 @@ data.forEach(function (elem) {
 console.log(list) */
 
 //剔除假值
- function compactObject(val){
-   const data = Array.isArray(val) ? val.filter(Boolean) : val
-   return Object.keys(data).reduce((acc,key)=>{
-     const value = data[key]
-     if(value){
-      acc[key] = typeof value === 'object' ? compactObject(value) : value
-     }
-     return acc
-   },Array.isArray(data) ? [] : {})
- }
+function compactObject(val) {
+  const data = Array.isArray(val) ? val.filter(Boolean) : val
+  return Object.keys(data).reduce(
+    (acc, key) => {
+      const value = data[key]
+      if (value) {
+        acc[key] = typeof value === 'object' ? compactObject(value) : value
+      }
+      return acc
+    },
+    Array.isArray(data) ? [] : {}
+  )
+}
 
 //简易节流
-function throttle(func,delay){
-  let pre = 0;
-  return function(){
+/*
+function throttle(func, delay) {
+  let pre = 0
+  return function () {
     let now = new Date()
     const context = this,
-        args = arguments;
-    if(now - pre > delay){
-      func.apply(context,args)
-      pre = now;
+      args = arguments
+    if (now - pre > delay) {
+      func.apply(context, args)
+      pre = now
     }
   }
 }
 
-window.addEventListener("resize",throttle(function(){
-  console.log(123)
-},1000))
-
+window.addEventListener(
+  'resize',
+  throttle(function () {
+    console.log(123)
+  }, 1000)
+)
+*/
 
 //简易防抖
-function debounce (func,delay){
-  let timer;
-  return function(){
+/*
+function debounce(func, delay) {
+  let timer
+  return function () {
     const context = this,
-        args = arguments;
+      args = arguments
     clearTimeout(timer)
-    timer = setTimeout(function(){
-      func.apply(context,args)
-    },delay)
+    timer = setTimeout(function () {
+      func.apply(context, args)
+    }, delay)
   }
 }
+*/
 
 //scroll 图片懒加载
-<script>	
+/**
   const images = document.querySelectorAll("img");
 
   window.addEventListener("scroll", (e)=>{
@@ -144,36 +152,30 @@ function debounce (func,delay){
       console.log("gun")
     })
   })
-</script>
+*/
 
 //IntersectionObserver图片懒加载
 
-<script>
-		
-  const images = document.querySelectorAll("img")
+/**		
+const images = document.querySelectorAll("img")
 
-  const callback = (entries)=>{
+const callback = (entries)=>{
 
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        const image = entry.target;
-        const data_src = image.getAttribute("data-src")
-        image.setAttribute("src",data_src)
-        observer.unobserve(image)
-        console.log("触发")
-      }
-    })
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const image = entry.target;
+      const data_src = image.getAttribute("data-src")
+      image.setAttribute("src",data_src)
+      observer.unobserve(image)
+      console.log("触发")
+    }
+  })
 
-  }
+}
 
-  const observer = new IntersectionObserver(callback)
+const observer = new IntersectionObserver(callback)
 
-  images.forEach(image=>{
-    observer.observe(image)
-  })const images = document.querySelectorAll("img")
-  
-</script> 
-
-
-
-
+images.forEach(image=>{
+  observer.observe(image)
+})const images = document.querySelectorAll("img")
+*/

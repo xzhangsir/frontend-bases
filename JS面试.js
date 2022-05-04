@@ -1,4 +1,4 @@
-
+// 节点路径查找
 /*  var list = [
    {
      id: "ab",
@@ -29,7 +29,8 @@
      }
    }
  }
- console.log(findPathByLeafId('ef', list)) */
+ console.log(findPathByLeafId('ef', list)) 
+*/
 
 /*   setTimeout(function () {
     console.log('start')
@@ -43,7 +44,6 @@
     console.log('执行then')
   })
   console.log('end') */
-
 
 /* let a = {
     n:1
