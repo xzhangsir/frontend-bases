@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大屏or移动端适配</title>
+  <style>
+    /*
+      //less大屏适配   用法  .px2vw(margin-left, 35);
+
+      @wWidth: 4800;
+      @wHeight: 1620;
+
+      .px2vw(@name, @px) {
+        @{name}: (@px / @wWidth) * 100vw;
+      }
+      .px2vh(@name, @px) {
+        @{name}: @px / @wHeight * 100vh;
+      } 
+    */
+
+
+  </style>
+  <script>
+    // 移动端适配
+    //获取手机横向的设备独立像素
+    const dip = document.documentElement.clientWidth
+    // 计算根字体的大小  设备独立像素 * 100 / 设计稿的宽度
+    const rootFontSize = (dip * 100) / 375
+    //设置根字体
+    document.documentElement.style.fontSize = rootFontSize
+  </script>
+</head>
+<body>
+  
+</body>
+</html>
