@@ -7,8 +7,13 @@ vscode配置自动编译
 1.第一步   tsc --init 生成tsconfig.json   改 "outDir": "./js",
 
 2、第二步 选择终端 - 运行任务  监视tsconfig.json
+   或者 tsc  -p  tsconfig.json  --watch   //实时监测
 
 */
+
+
+// let 和 var  可以类型推断
+// const  值就是它的类型  字面量类型
 
 /* typeScript中的数据类型
 
@@ -275,7 +280,7 @@ function reverse(str:string|number):string|number{
 }
 
 /* 
-* 类型断言  <类型>值  或者 值 as 类型react中必须用最后一种 
+* 类型断言  <类型>值  或者 值 as 类型   react中必须用最后一种 
 */
 // 这样是不行的  因为length属性不是string和number都有的
 // function getLength(something:string|number):number{
