@@ -1,32 +1,26 @@
-const fs = require('fs');
-const path = require('path');
-const xlsx = require('node-xlsx');
-const sheets = xlsx.parse('./test.xlsx');
+const fs = require('fs')
+const path = require('path')
+const xlsx = require('node-xlsx')
+const sheets = xlsx.parse('./test.xlsx')
 
 let JSONArr = []
 
-sheets.map(sheet => {
-
+sheets.map((sheet) => {
   if (sheet.data.length !== 0) {
-    var { data } = sheet
-    var tempObj = {}
+    let { data } = sheet
+    let tempObj = {}
 
-    for (var i = 1, len = data.length; i < len; i++) {
-
-      for (var j = 0, len1 = data[0].length; j < len1; j++) {
-
+    for (let i = 1, len = data.length; i < len; i++) {
+      for (let j = 0, len1 = data[0].length; j < len1; j++) {
         tempObj[data[0][j]] = data[i][j]
-
       }
 
       JSONArr.push(tempObj)
 
       tempObj = {}
     }
-
   }
-
-});
+})
 
 let str = JSON.stringify(JSONArr)
 fs.writeFile(path.resolve(__dirname, './test.json'), str, function (err, data) {
@@ -36,8 +30,6 @@ fs.writeFile(path.resolve(__dirname, './test.json'), str, function (err, data) {
     console.log('写入完成')
   }
 })
-
-
 
 // 使用xls-to-json 模块
 /* node_xj = require("xls-to-json");
@@ -52,4 +44,3 @@ node_xj({
     console.log(result);
   }
 }); */
-
