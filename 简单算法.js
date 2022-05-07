@@ -1,4 +1,3 @@
-
 // 斐波那契数列
 /* function fibonacci(n) {
   let res = new Array(n + 1).fill(0)
@@ -41,3 +40,36 @@
   return arr
 } */
 
+// 节点路径查找
+/*  var list = [
+   {
+     id: "ab",
+     children: [
+       {
+         id: "cd",
+         children: [
+           {
+             id: "ef",
+             children: []
+           }
+         ]
+       },
+       {
+         id: "fg",
+         children: []
+       }
+     ]
+   }
+ ]
+ function findPathByLeafId(leafId, nodes, path = []) {
+   for (var i = 0; i < nodes.length; i++) {
+     path.push(nodes[i].id);
+     if (leafId == nodes[i].id) return path;
+     if (nodes[i].children) {
+       var findResult = findPathByLeafId(leafId, nodes[i].children, path);
+       if (findResult) return findResult;
+     }
+   }
+ }
+ console.log(findPathByLeafId('ef', list)) 
+*/
