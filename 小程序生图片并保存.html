@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>小程序生成图片并保存</title>
+</head>
+<body>
+  <script>
+    //生成图片
+    outImg: function() {
+      var ctx
+      this.setData({
+        isCanvas: true
+      })
+      ctx = wx.createCanvasContext('shareCanvas')
+      ctx.drawImage('../../images/wxxcx.png', 20, 20, 112, 112)
+      ctx.draw()
+    },
+    // 保存到手机中
+     saveImg: function() {
+      wx.canvasToTempFilePath({
+        quality: 1,
+        canvasId: 'shareCanvas',
+        success(res) {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath
+          })
+        }
+      })
+    }
+  </script>
+</body>
+</html>
