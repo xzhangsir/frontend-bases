@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实现正反面</title>
+  <style>
+     div {
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+    position: relative;
+    }
+    
+    .div .front,
+    .div .oppsite {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transition: all 2s;
+    text-align: center;
+    backface-visibility: hidden;
+    }
+    
+    .div .front {
+    transform: rotateY(-180deg);
+    background-color: #0f0;
+    
+    }
+    
+    .div .oppsite {
+    z-index: 1;
+    background-color: #f00;
+    }
+    
+    .div:hover .front {
+    transform: rotateY(0);
+    }
+    
+    .div:hover .oppsite {
+    z-index: 0;
+    transform: rotateY(-180deg);
+    }
+  </style>
+</head>
+<body>
+  
+ 
+  
+  <div class="div">
+    <div class="oppsite">正面的内容</div>
+    <div class="front">反面的内容</div>
+  </div>
+</body>
+</html>
