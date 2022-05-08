@@ -253,3 +253,14 @@ function draw() {
         // console.log(canvas.toDataURL())
     }
 } */
+
+//图片文件上传预览
+
+/* 	<input type="file" id = "fileDom">
+	<img src="" alt="" id = "imgDom">
+<script>
+			$("#fileDom").change((w)=>{
+				console.log($("#fileDom").get(0).files[0])
+				$("#imgDom").attr('src',URL.createObjectURL($("#fileDom").get(0).files[0]))
+			})
+</script> */
