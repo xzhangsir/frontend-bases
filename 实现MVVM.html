@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实现MVVM</title>
+</head>
+<body>
+    <div id="app">
+      <input type="text" v-model="name" placeholder="name">
+      <input type="text" v-model="age" placeholder="age">
+      <div>
+        <span>{{name}}</span>
+        <span>{{age}}</span>
+      </div>
+    </div>
+</body>
+</html>
+<script>
+  class MVVM {
+    constructor(el, data) {
+      this.el = document.querySelector(el),
+        // this.data = data
+        this._data = data
+
+      this.domPool = {}
+      this.init()
+    }
+    init() {
+      this.initData()
+      this.bindInput(this.el)
+      this.bindDom(this.el)
+    }
+    initData() {
+      const self = this;
+     /*  this._data = {}
+      for(let key in this.data){
+        Object.defineProperty(this._data,key,{
+          get(){
+            console.log("获取值：",key,self.data[key])
+            return self.data[key]
+          },
+          set(newVal){
+            console.log("设置值：",key,newVal)
+            self.domPool[key].innerHTML = newVal
+            self.data[key] = newVal
+          }
+        })
+      } */
+      this._data = new Proxy(self._data, {
+        get(target, key) {
+          return Reflect.get(target, key);
+        },
+        set(target, key, val) {
+          self.domPool[key].innerHTML = val
+          return Reflect.set(target, key, val)
+        }
+      })
+    }
+    bindInput(el) {
+      let allInputs = el.querySelectorAll("input")
+      allInputs.forEach(input => {
+        const _modelKey = input.getAttribute('v-model')
+        if (_modelKey) {
+          input.addEventListener("keyup", this.handleInput.bind(this, _modelKey, input), false)
+        }
+      })
+    }
+    handleInput(key, input) {
+      let _val = input.value
+      this._data[key] = _val
+    }
+    bindDom(el) {
+      const { childNodes } = el
+      childNodes.forEach(item => {
+        if (item.nodeType === 3) {
+          const _val = item.nodeValue;
+          if (_val.trim().length) {
+            let _isValid = /\{\{(.+?)\}\}/.test(_val);
+            if (_isValid) {
+              const _key = _val.match(/\{\{(.+?)\}\}/)[1].trim()
+              this.domPool[_key] = item.parentNode
+              item.parentNode.innerText = this._data[_key] || null
+            }
+          }
+        }
+        item.childNodes && this.bindDom(item)
+      })
+    }
+  }
+  var vm = new MVVM("#app", {
+    name: "",
+    age: ""
+  })
+</script>
+
+
+
+
