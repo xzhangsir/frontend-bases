@@ -28,4 +28,4 @@ git add . 和 git commit -m "" 可以合并为 git commit -a -m ""
 
 保存当前未 commit 的代码 git stash [save "备注的内容"]
 
-应用刚保存 stash 的代码 git stash apply
+使用刚保存 stash 的代码  git stash apply
