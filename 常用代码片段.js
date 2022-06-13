@@ -36,13 +36,13 @@ function throttle(fn, delay) {
       args = arguments,
       cut = new Date().getTime()
     clearTimeout(t)
-    if (cur - begin >= delay) {
+    if (cut - begin >= delay) {
       fn.apply(_self, args)
-      begin = cur
+      begin = cut
     } else {
       t = setTimeout(function () {
         fn.apply(_self, args)
-      }, delay - (cur - begin))
+      }, delay - (cut - begin))
     }
   }
 }
