@@ -1,0 +1,79 @@
+查看有哪些数据库   show databases;
+
+创建数据库  create database 数据库的名称；
+
+删除数据库  drop database 数据库的名称；
+
+选择你要操作的数据库   use 数据库的名称    后面没有分号
+
+查看这个库中有哪些表  show tables;
+
+创建一张表 create table 表名（字段名 字段类型，字段名 字段类型，.....）；
+例如 create table studnet(name char(10),age int,id int)；
+
+查看表的结构  desc 表名；
+修改表的名字  alter table 旧的表名   rename  新的表名；
+
+给表中增加字段       alter table 表名 add 字段 字段类型；
+      修改字段类型   alter table 表名 modify 字段 新的字段类型；
+      修改字段名     alter table 表名 change 旧的字段 新的字段 新的字段类型；
+      删除字段	     alter table 表名 drop   要删除的字段名；
+修改字段的顺序  alter table 表名 modify 字段1 字段1的类型 [first] after 字段2；
+	 first 是可选属性 表示将字段1 修改为 整张表的的一个字段
+	after 字段2  指将 字段1 插入到 字段2 的后面
+
+查看表的数据 ：select[字段列表，表达式，函数]from 表名；
+               select* from 表名； 查询整张表
+	       select 字段，字段，.. from 表名；  查询每个字段的值
+	       select 字段*12 from 表名； 对某一个字段进行运算
+	      select distinct 字段 from 表名； 去除该字段中重复的数据
+	       select * from 表名 where 条件表达式；查询满足条件的数据    并且and  或者or  不等于<>
+	      select distinct 字段 from 表名 字段 in(数值，数值，。。。)。判断数值是in列表中的任意一个
+              select distinct 字段 from 表名 where 字段 not in（数值，数值，。。。)。不是in列表中的任意一个
+	   select distinct 字段 from 表名 where 字段 between 值 and 值； 在两个值之间
+	    select distinct 字段 from 表名 where 字段 is null；找到是null的数据。 
+	select distinct 字段 from 表名 where 字段 is  not null；找到不是null的数据。
+
+
+删除一张表 drop table 表名；
+
+向表中添加数据 insert into 表名（字段，字段，...） values (字段值，字段值，....)；
+	注意 字段要和字段值相对应 字符型要加引号 如果要给整张表的所有字段添加数据 表名后面的字段可以不写。
+
+删除表中的数据： delete from 表名 ;直接清空表中的数据；
+		 delete from 表名 where 条件表达式；
+               例如：delete from student where id = 1；删除id = 1的数据。where有筛选的意思
+
+修改表中的数据  update 表名 set 字段 = 字段值，字段 = 字段值，... where 条件表达式；
+	例如    update student set id = 1 where sex = 'max'; 将sex = 'max'的id值改为1；
+
+
+约束 在创建表的时候添加约束
+
+   唯一约束 
+  不允许某个字段的值重复 create table 表名（字段名 字段类型 unique，字段名 字段类型，..）；
+
+  非空约束   任何一个NULL都不相等
+ 不允许该字段的值为空 create table 表名（字段名 字段类型 not null，字段名 字段类型，..）；
+多个约束之间不需要加逗号直接写
+
+  主键约束 （唯一和非空）
+   create table 表名（字段名 字段类型 primary key，字段名 字段类型，..）；
+ 一般数字类型主键配合mysql的自动增长策略  auto_increment
+create table 表名（字段名 字段类型 primary key auto_increment，字段名 字段类型，..）；
+
+  外键约束  单独加
+create table 表名（字段名 字段类型 primary key auto_increment，字段名 字段类型，..，foreing key(字段) references 外键的表名（字段））；
+例如：	create table studnet(id int primary key auto_increment，name char(10),班级 char(10),foreign key(字段（班级）) references 班级表（字段（班级号））)；
+意思是 班级这个字段的值要参考 班级表 中的班级号这个字段  注意：班级号 必须是班级表的主键。外键必须是另一张表的主键。
+
+
+
+
+
+
+
+
+
+  
+
