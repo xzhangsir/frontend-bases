@@ -1,8 +1,13 @@
+### 前端基础知识  
+
+
 创建分支 git branch (分支名)
 
 切换分支 git checkout (分支名)
 
 删除分支 git branch -d (分支名)
+
+重命名分支 git branch -M (分支名)
 
 获取当前分支下的文件 git pull origin (分支名)
 
@@ -18,7 +23,7 @@
 
 暂存区覆盖工作区的内容 git checkout <file>
 
-删除暂存区文件 git rm <file> --cached
+删除暂存区文件 git rm <file> [--cached]
 
 恢复版本区指定版本的内容到工作区 git reset --hard <version>
 
