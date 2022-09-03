@@ -83,7 +83,7 @@ data.forEach(function (elem) {
 console.log(list) */
 
 //剔除假值
-function compactObject(val) {
+/* function compactObject(val) {
   const data = Array.isArray(val) ? val.filter(Boolean) : val
   return Object.keys(data).reduce(
     (acc, key) => {
@@ -95,7 +95,7 @@ function compactObject(val) {
     },
     Array.isArray(data) ? [] : {}
   )
-}
+} */
 
 //简易节流
 /*
@@ -170,7 +170,6 @@ const callback = (entries)=>{
       console.log("触发")
     }
   })
-
 }
 
 const observer = new IntersectionObserver(callback)
@@ -264,3 +263,69 @@ function draw() {
 				$("#imgDom").attr('src',URL.createObjectURL($("#fileDom").get(0).files[0]))
 			})
 </script> */
+
+// 节点路径查找
+/*  var list = [
+   {
+     id: "ab",
+     children: [
+       {
+         id: "cd",
+         children: [
+           {
+             id: "ef",
+             children: []
+           }
+         ]
+       },
+       {
+         id: "fg",
+         children: []
+       }
+     ]
+   }
+ ]
+ function findPathByLeafId(leafId, nodes, path = []) {
+   for (var i = 0; i < nodes.length; i++) {
+     path.push(nodes[i].id);
+     if (leafId == nodes[i].id) return path;
+     if (nodes[i].children) {
+       var findResult = findPathByLeafId(leafId, nodes[i].children, path);
+       if (findResult) return findResult;
+     }
+   }
+ }
+ console.log(findPathByLeafId('ef', list))
+ */
+
+//  arrayToTree
+/* const arr = [
+  { id: 1, parentId: null, name: 'a' },
+  { id: 2, parentId: null, name: 'b' },
+  { id: 3, parentId: 1, name: 'c' },
+  { id: 4, parentId: 2, name: 'd' },
+  { id: 5, parentId: 1, name: 'e' },
+  { id: 6, parentId: 3, name: 'f' },
+  { id: 7, parentId: 4, name: 'g' },
+  { id: 8, parentId: 7, name: 'h' }
+]
+
+function arrayToTree(arr) {
+  if (!Array.isArray(arr) || !arr.length) return
+  let map = {}
+  arr.forEach((item) => (map[item.id] = item))
+
+  let roots = []
+  arr.forEach((item) => {
+    const parent = map[item.parentId]
+    if (parent) {
+      ;(parent.children || (parent.children = [])).push(item)
+    } else {
+      roots.push(item)
+    }
+  })
+
+  return roots
+}
+
+console.log(arrayToTree(arr)) */
