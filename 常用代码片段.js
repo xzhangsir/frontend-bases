@@ -329,3 +329,14 @@ function arrayToTree(arr) {
 }
 
 console.log(arrayToTree(arr)) */
+
+// 移动端适配
+/*
+    //获取手机横向的设备独立像素
+    const dip = document.documentElement.clientWidth
+    // 计算根字体的大小  设备独立像素 * 100 / 设计稿的宽度
+    const rootFontSize = (dip * 100) / 375
+    //设置根字体
+    document.documentElement.style.fontSize = rootFontSiz
+
+*/
