@@ -27,6 +27,16 @@
 
 查看引用版本号 git reflog
 
+拉取远程tag  git fetch origin --prune-tags
+
+基于v1.0.0创建一个分支并切换过来 git checkout -b release-1.0 v1.0.0
+
+查看远程tag  git ls-remote -t  
+
+删除本地tag  git tag -d v3.0.0
+
+删除远程tag  git push -d origin v3.0.0
+
 git add . 和 git commit -m "" 可以合并为 git commit -a -m ""
 
 保存当前未 commit 的代码 git stash [save "备注的内容"]
